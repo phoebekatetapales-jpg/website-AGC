@@ -6,6 +6,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 body{margin:0}
+html{scroll-behavior:smooth}
+.agc-site{overflow-x:clip}
+.agc-site section{scroll-margin-top:96px}
 
 .agc{font-family:'Nunito Sans',system-ui,-apple-system,'Segoe UI',sans-serif;color:#33415C;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;text-align:left}
 .agc *,.agc *::before,.agc *::after{box-sizing:border-box}
@@ -15,7 +18,7 @@ body{margin:0}
 .agc a{text-decoration:none}
 .agc a:focus-visible,.agc button:focus-visible{outline:3px solid #C59B4E;outline-offset:3px}
 .agc .agc-wrap{max-width:1240px;margin:0 auto;padding:0 24px}
-.agc .agc-sec{padding:96px 0}
+.agc.agc-sec,.agc .agc-sec{padding:96px 0}
 .agc .agc-eyebrow{font-weight:700;font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:#8A6A2C}
 .agc .agc-h2{margin-top:12px;font-weight:800;font-size:clamp(28px,4vw,42px)}
 .agc .agc-lead{font-size:17px}
@@ -28,7 +31,7 @@ body{margin:0}
 .agc .agc-btn-outline-light{background:transparent;color:#fff;border-color:#fff}
 .agc .agc-check{display:flex;gap:10px;align-items:center;font-weight:700;color:#0B2545}
 .agc .agc-check svg{flex:none}
-@media (max-width:768px){.agc .agc-sec{padding:64px 0}.agc .agc-wrap{padding:0 20px}.agc .agc-btn{width:100%}}
+@media (max-width:768px){.agc.agc-sec,.agc .agc-sec{padding:64px 0}.agc .agc-wrap{padding:0 20px}.agc .agc-btn{width:100%}}
 @media (prefers-reduced-motion:reduce){.agc *{transition:none!important}}
 
 /* ---- Top bar + Navigation ---- */
@@ -38,7 +41,9 @@ body{margin:0}
 .agc-nav .agc-top span{display:flex;gap:8px;align-items:center}
 .agc-nav .agc-top a{color:#E8E1D2}
 .agc-nav .agc-top a.gold{color:#C59B4E;font-weight:700}
-.agc-nav header{background:#fff;border-bottom:1px solid #E6DCC8;position:relative;z-index:50}
+.agc-nav{position:sticky;top:0;z-index:1000}
+.agc-nav header{background:#fff;border-bottom:1px solid #E6DCC8;position:relative;z-index:50;transition:box-shadow .25s}
+.agc-nav.agc-stuck header{box-shadow:0 8px 24px rgba(11,37,69,.10)}
 .agc-nav .agc-bar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:12px;padding-bottom:12px}
 .agc-nav .agc-logo img{height:58px;width:auto;border-radius:6px}
 .agc-nav .agc-links{display:flex;gap:28px;font-family:Montserrat,sans-serif;font-weight:600;font-size:15px}
@@ -49,7 +54,7 @@ body{margin:0}
 .agc-nav .agc-actions .agc-btn{min-height:44px;padding:0 22px;font-size:14px;width:auto}
 .agc-nav .agc-burger{display:none;width:48px;height:48px;border-radius:12px;border:1px solid #D1C2A5;background:#fff;align-items:center;justify-content:center;cursor:pointer;padding:0}
 .agc-nav .agc-mobile{display:none;border-top:1px solid #E6DCC8;background:#fff}
-.agc-nav .agc-mobile.open{display:block}
+.agc-nav .agc-mobile.open{display:block;max-height:calc(100vh - 80px);overflow-y:auto}
 .agc-nav .agc-mobile a{display:block;padding:14px 0;border-bottom:1px solid #F0E9DB;font-family:Montserrat,sans-serif;font-weight:600;color:#0B2545}
 .agc-nav .agc-mobile a.agc-btn{display:flex;margin:18px 0 22px;width:100%;border-bottom:0;padding:0 28px;color:#0B2545}
 @media (max-width:1080px){
@@ -131,6 +136,7 @@ body{margin:0}
 .agc-facts span{color:#DDE3EE;font-weight:600}
 @media (max-width:900px){.agc-facts .agc-wrap{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 20px}}
 @media (max-width:420px){.agc-facts .agc-wrap{grid-template-columns:1fr}}
+@media (max-width:380px){.agc-subjects .courses{grid-template-columns:1fr}}
 /* ---- Subjects (tabs) ---- */
 .agc-subjects{background:#fff}
 .agc-subjects .intro{max-width:640px}
@@ -147,8 +153,8 @@ body{margin:0}
 .agc-subjects .course i{flex:none;width:10px;height:10px;border-radius:3px;background:#C59B4E}
 @media (max-width:900px){.agc-subjects .box{grid-template-columns:1fr;padding:28px 22px}}
 @media (max-width:560px){
-  .agc-subjects .tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px;margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px}
-  .agc-subjects .tab{flex:none}
+  .agc-subjects .tabs{gap:8px}
+  .agc-subjects .tab{min-height:42px;padding:0 16px;font-size:14px}
   .agc-subjects .courses{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   .agc-subjects .course{padding:14px;font-size:15px}
 }
@@ -542,6 +548,11 @@ function update(){var c=[];try{c=JSON.parse(localStorage.getItem('agcCart')||'[]
   var total=c.reduce(function(s,i){return s+(i.amount||0);},0);
   root.querySelectorAll('.agc-cart-count').forEach(function(el){el.textContent=c.length?('('+c.length+') · $'+total.toLocaleString('en-US')):'';});}
 window.addEventListener('agc-cart-updated',update);window.addEventListener('storage',update);update();
+/* sticky: only the white header stays pinned; the top bar scrolls away */
+var topBar=root.querySelector('.agc-top');
+function pin(){root.style.top=-(topBar?topBar.offsetHeight:0)+'px';}
+function stuck(){root.classList.toggle('agc-stuck',window.scrollY>(topBar?topBar.offsetHeight:0));}
+pin();window.addEventListener('resize',pin);window.addEventListener('scroll',stuck,{passive:true});stuck();
 })();
 
 /* ---- Subjects (tabs) ---- */
