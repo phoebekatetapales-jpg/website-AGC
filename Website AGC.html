@@ -181,16 +181,17 @@ html{scroll-behavior:smooth}
 .agc-pricing .meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-weight:700;font-size:15px;color:#0B2545}
 .agc-pricing .save{background:#F4ECDC;color:#7A5C22;padding:4px 10px;border-radius:999px;font-size:13px}
 .agc-pricing .desc{font-size:15px;flex-grow:1}
-.agc-pricing .add{margin-top:6px;width:100%;min-height:50px;border-radius:999px;font-family:Montserrat,sans-serif;font-weight:700;font-size:15px;cursor:pointer;border:none;background:#0B2545;color:#fff}
-.agc-pricing .add.in{background:#C59B4E;color:#0B2545}
 .agc-pricing .plan.dark{background:#0B2545;border:2px solid #C59B4E;color:#DDE3EE}
 .agc-pricing .plan.dark .k,.agc-pricing .plan.dark .price b{color:#C59B4E}
 .agc-pricing .plan.dark h3,.agc-pricing .plan.dark .meta{color:#fff}
 .agc-pricing .plan.dark .price span{color:#DDE3EE}
 .agc-pricing .plan.dark .save{background:rgba(197,155,78,.2);color:#E9CF9C}
-.agc-pricing .plan.dark .add{background:#C59B4E;color:#0B2545}
-.agc-pricing .toast{margin:28px auto 0;max-width:560px;background:#0B2545;color:#fff;border-radius:14px;padding:14px 20px;display:none;gap:12px;align-items:center;justify-content:center;font-weight:700;text-align:center}
-.agc-pricing .toast.show{display:flex}
+.agc-pricing .plans:not(.all) .plan.extra{display:none}
+.agc-pricing .more-wrap{margin-top:44px;text-align:center}
+.agc-pricing .more-btn svg{transition:transform .3s}
+.agc-pricing .more-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+.agc-pricing .more-wrap .more-btn:hover svg{transform:translateY(2px)}
+.agc-pricing .more-wrap .more-btn[aria-expanded="true"]:hover svg{transform:rotate(180deg) translateY(2px)}
 @media (max-width:1100px){.agc-pricing .plans{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:680px){.agc-pricing .plans{grid-template-columns:1fr;gap:18px}.agc-pricing .plan{padding:26px 22px}.agc-pricing .price b{font-size:38px}}
 /* ---- Meet the Founder ---- */
@@ -292,8 +293,6 @@ html{scroll-behavior:smooth}
 .agc-subjects .s-anim{animation:agcFade .4s both}
 
 /* pricing */
-.agc-pricing .add{transition:transform .2s,background .25s,color .25s}
-.agc-pricing .add.bump{animation:agcPop .35s}
 .agc-pricing .plan.dark{animation:agcPulse 3s 1s infinite}
 
 /* nav underline + mobile menu slide */
@@ -468,8 +467,10 @@ html{scroll-behavior:smooth}
       <h2 class="agc-h2">Pay per session or save with a package</h2>
       <p class="agc-lead">Every session is 60 minutes of one-on-one instruction. The more sessions you prepay, the lower your hourly rate.</p>
     </div>
-    <div class="plans"></div>
-    <div class="toast" role="status" aria-live="polite"></div>
+    <div class="plans" id="agc-plans"></div>
+    <div class="more-wrap">
+      <button type="button" class="agc-btn agc-btn-navy more-btn" aria-expanded="false" aria-controls="agc-plans"><span>View more plans</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+    </div>
   </div>
 </section>
 
@@ -572,42 +573,31 @@ render();
 
 /* ---- Plans & Pricing ---- */
 (function(){
-/* CHECKOUT: paste each plan's GHL order form / payment link into checkoutUrl.
-   If a checkoutUrl is set, the button sends the parent straight to checkout.
-   If it is left empty, the button adds the plan to the on-page cart. */
+/* SHOWN: how many plans are visible before "View more plans" is clicked. */
+var SHOWN=3;
 var PLANS=[
- {id:'flex',kicker:'Pay-as-you-go',name:'Flex Aspire Pass',amount:100,price:'$100',note:'/ session',rate:'$100 per 60-minute session',save:'',desc:'Complete scheduling freedom with no long-term commitment — ideal for exam prep, last-minute homework help, or occasional check-ins.',checkoutUrl:''},
- {id:'sprint',kicker:'8 sessions',name:'Sprint Growth Pack',amount:720,price:'$720',note:'package',rate:'$90 / session',save:'Save $80',desc:'A focused 8-hour jumpstart to master a challenging unit, catch up on core concepts, or prepare for midterms.',checkoutUrl:''},
- {id:'momentum',kicker:'16 sessions',name:'Momentum Growth Pack',amount:1360,price:'$1,360',note:'package',rate:'$85 / session',save:'Save $240',desc:'Steady improvement over a quarter or marking period — tackling coursework while building organization and study habits.',checkoutUrl:''},
- {id:'ascent',kicker:'32 sessions',name:'Ascent Progress Pack',amount:2560,price:'$2,560',note:'package',rate:'$80 / session',save:'Save $640',desc:'Sustained mid-term guidance across multiple subjects or specialized executive functioning coaching over several months.',checkoutUrl:''},
- {id:'semester',kicker:'48 sessions',name:'Semester Conquer Pass',amount:3600,price:'$3,600',note:'package',rate:'$75 / session',save:'Save $1,200',desc:'Comprehensive, term-long support with a dedicated mentor through major projects, exams, and daily coursework.',checkoutUrl:''},
- {id:'apex',kicker:'72 sessions · full year',name:'Apex Scholar Elite',amount:5040,price:'$5,040',note:'package',rate:'$70 / session',save:'Save $2,160',desc:'Our most exclusive offering: full academic-year coverage, our lowest hourly rate, and top-priority coach matching.',dark:true,badge:'Best value',checkoutUrl:''}
+ {id:'flex',kicker:'Pay-as-you-go',name:'Flex Aspire Pass',amount:100,price:'$100',note:'/ session',rate:'$100 per 60-minute session',save:'',desc:'Complete scheduling freedom with no long-term commitment — ideal for exam prep, last-minute homework help, or occasional check-ins.'},
+ {id:'sprint',kicker:'8 sessions',name:'Sprint Growth Pack',amount:720,price:'$720',note:'package',rate:'$90 / session',save:'Save $80',desc:'A focused 8-hour jumpstart to master a challenging unit, catch up on core concepts, or prepare for midterms.'},
+ {id:'momentum',kicker:'16 sessions',name:'Momentum Growth Pack',amount:1360,price:'$1,360',note:'package',rate:'$85 / session',save:'Save $240',desc:'Steady improvement over a quarter or marking period — tackling coursework while building organization and study habits.'},
+ {id:'ascent',kicker:'32 sessions',name:'Ascent Progress Pack',amount:2560,price:'$2,560',note:'package',rate:'$80 / session',save:'Save $640',desc:'Sustained mid-term guidance across multiple subjects or specialized executive functioning coaching over several months.'},
+ {id:'semester',kicker:'48 sessions',name:'Semester Conquer Pass',amount:3600,price:'$3,600',note:'package',rate:'$75 / session',save:'Save $1,200',desc:'Comprehensive, term-long support with a dedicated mentor through major projects, exams, and daily coursework.'},
+ {id:'apex',kicker:'72 sessions · full year',name:'Apex Scholar Elite',amount:5040,price:'$5,040',note:'package',rate:'$70 / session',save:'Save $2,160',desc:'Our most exclusive offering: full academic-year coverage, our lowest hourly rate, and top-priority coach matching.',dark:true,badge:'Best value'}
 ];
-var root=document.querySelector('.agc-pricing'),list=root.querySelector('.plans'),toast=root.querySelector('.toast'),timer;
+var root=document.querySelector('.agc-pricing'),list=root.querySelector('.plans'),btn=root.querySelector('.more-btn');
 function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
-function getCart(){try{return JSON.parse(localStorage.getItem('agcCart')||'[]');}catch(e){return [];}}
-function setCart(c){try{localStorage.setItem('agcCart',JSON.stringify(c));}catch(e){}window.dispatchEvent(new Event('agc-cart-updated'));}
-function render(){
-  var cart=getCart();
-  list.innerHTML=PLANS.map(function(p){
-    var n=cart.filter(function(c){return c.id===p.id;}).length;
-    var label=p.checkoutUrl?'Buy now':(n?'Added to cart ('+n+') — add another':'Add to cart');
-    return '<div class="plan'+(p.dark?' dark':'')+'"><div class="head"><div><div class="k">'+esc(p.kicker)+'</div><h3>'+esc(p.name)+'</h3></div>'+(p.badge?'<span class="badge">'+esc(p.badge)+'</span>':'')+'</div>'+
-      '<div class="price"><b>'+esc(p.price)+'</b><span>'+esc(p.note)+'</span></div>'+
-      '<div class="meta"><span>'+esc(p.rate)+'</span>'+(p.save?'<span class="save">'+esc(p.save)+'</span>':'')+'</div>'+
-      '<p class="desc">'+esc(p.desc)+'</p><button type="button" class="add'+(n?' in':'')+'" data-id="'+p.id+'">'+label+'</button></div>';
-  }).join('');
-}
-list.addEventListener('click',function(e){
-  var b=e.target.closest('.add');if(!b)return;
-  var p=PLANS.filter(function(x){return x.id===b.getAttribute('data-id');})[0];
-  if(p.checkoutUrl){window.location.href=p.checkoutUrl;return;}
-  var c=getCart();c.push({id:p.id,name:p.name,amount:p.amount});setCart(c);render();
-  toast.textContent=p.name+' added to your cart';toast.classList.add('show');
-  clearTimeout(timer);timer=setTimeout(function(){toast.classList.remove('show');},3500);
+list.innerHTML=PLANS.map(function(p,i){
+  return '<div class="plan'+(p.dark?' dark':'')+(i>=SHOWN?' extra':'')+'"><div class="head"><div><div class="k">'+esc(p.kicker)+'</div><h3>'+esc(p.name)+'</h3></div>'+(p.badge?'<span class="badge">'+esc(p.badge)+'</span>':'')+'</div>'+
+    '<div class="price"><b>'+esc(p.price)+'</b><span>'+esc(p.note)+'</span></div>'+
+    '<div class="meta"><span>'+esc(p.rate)+'</span>'+(p.save?'<span class="save">'+esc(p.save)+'</span>':'')+'</div>'+
+    '<p class="desc">'+esc(p.desc)+'</p></div>';
+}).join('');
+if(PLANS.length<=SHOWN){btn.parentNode.style.display='none';return;}
+btn.addEventListener('click',function(){
+  var open=list.classList.toggle('all');
+  btn.setAttribute('aria-expanded',open);
+  btn.querySelector('span').textContent=open?'Show fewer plans':'View more plans';
+  if(!open&&btn.getBoundingClientRect().top<0)btn.scrollIntoView({block:'center'});
 });
-window.addEventListener('agc-cart-updated',render);
-render();
 })();
 
 /* ---- Images: swap these for your GHL Media Library URLs if you like ---- */
