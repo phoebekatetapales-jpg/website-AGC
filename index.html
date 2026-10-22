@@ -304,6 +304,100 @@ html{scroll-behavior:smooth}
   .agc-hero h1 span{background-size:100% 100%}
 }
 
+/* ---- Cart & checkout ---- */
+.agc-cart-btn{position:relative;flex:none;width:48px;height:48px;border-radius:12px;border:1px solid #D1C2A5;background:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0;color:#0B2545;transition:border-color .2s,transform .2s}
+.agc-cart-btn:hover{border-color:#C59B4E;transform:translateY(-1px)}
+.agc-cart-btn:focus-visible{outline:3px solid #C59B4E;outline-offset:3px}
+.agc-cart-count{position:absolute;top:-7px;right:-7px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:#C59B4E;color:#0B2545;font-family:Montserrat,sans-serif;font-weight:800;font-size:12px;line-height:22px;text-align:center;border:2px solid #fff}
+.agc-cart-count[hidden]{display:none}
+.agc-cart-btn.bump{animation:agcCartBump .45s}
+@keyframes agcCartBump{0%,100%{transform:none}40%{transform:scale(1.14)}}
+
+/* program picker on each plan card */
+.agc-pricing .agc-pick{border:0;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+.agc-pricing .agc-pick legend{padding:0;margin-bottom:8px;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8A6A2C}
+.agc-pricing .agc-pick label{display:flex;align-items:center;gap:12px;padding:10px 14px;border:1px solid #E6DCC8;border-radius:14px;cursor:pointer;transition:border-color .2s,background .2s}
+.agc-pricing .agc-pick label:hover{border-color:#C59B4E}
+.agc-pricing .agc-pick input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.agc-pricing .agc-pick .dot{flex:none;width:18px;height:18px;border-radius:50%;border:2px solid #B9A887;display:grid;place-items:center;transition:border-color .2s}
+.agc-pricing .agc-pick .dot::after{content:"";width:8px;height:8px;border-radius:50%;background:#C59B4E;transform:scale(0);transition:transform .2s}
+.agc-pricing .agc-pick .t{display:flex;flex-direction:column;line-height:1.3;min-width:0}
+.agc-pricing .agc-pick .t b{font-family:Montserrat,sans-serif;font-size:14px;color:#0B2545}
+.agc-pricing .agc-pick .t small{font-size:13px;color:#5A6680}
+.agc-pricing .agc-pick input:checked+label{border-color:#C59B4E;background:#FBF6EC}
+.agc-pricing .agc-pick input:checked+label .dot{border-color:#C59B4E}
+.agc-pricing .agc-pick input:checked+label .dot::after{transform:scale(1)}
+.agc-pricing .agc-pick input:focus-visible+label{outline:3px solid #C59B4E;outline-offset:2px}
+.agc-pricing .agc-pick-err{font-size:14px;font-weight:700;color:#B4442C}
+.agc-pricing .agc-pick-err[hidden]{display:none}
+.agc-pricing .agc-add{width:100%;margin-top:4px}
+.agc-pricing .plan.dark .agc-pick legend{color:#C59B4E}
+.agc-pricing .plan.dark .agc-pick label{border-color:rgba(197,155,78,.35)}
+.agc-pricing .plan.dark .agc-pick .t b{color:#fff}
+.agc-pricing .plan.dark .agc-pick .t small{color:#C7CFDD}
+.agc-pricing .plan.dark .agc-pick input:checked+label{background:rgba(197,155,78,.14)}
+.agc-pricing .plan.dark .agc-pick-err{color:#F3A48F}
+
+/* drawer */
+.agc-cart{position:fixed;inset:0;z-index:2000;visibility:hidden;pointer-events:none}
+.agc-cart.open{visibility:visible;pointer-events:auto}
+.agc-cart .scrim{position:absolute;inset:0;background:rgba(7,26,51,.55);opacity:0;transition:opacity .3s}
+.agc-cart.open .scrim{opacity:1}
+.agc-cart .panel{position:absolute;top:0;right:0;bottom:0;width:min(460px,100%);background:#fff;display:flex;flex-direction:column;box-shadow:-20px 0 50px rgba(7,26,51,.25);transform:translateX(100%);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.agc-cart.open .panel{transform:none}
+.agc-cart .top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 24px;border-bottom:1px solid #E6DCC8}
+.agc-cart .top h3{font-size:20px;font-weight:800}
+.agc-cart .x{width:42px;height:42px;border-radius:12px;border:1px solid #E6DCC8;background:#fff;display:grid;place-items:center;cursor:pointer;color:#0B2545;padding:0}
+.agc-cart .x:hover{border-color:#C59B4E}
+.agc-cart button:focus-visible,.agc-cart input:focus-visible,.agc-cart select:focus-visible,.agc-cart textarea:focus-visible{outline:3px solid #C59B4E;outline-offset:2px}
+.agc-cart .body{flex:1;overflow-y:auto;padding:20px 24px}
+.agc-cart .foot{border-top:1px solid #E6DCC8;padding:18px 24px 22px;display:flex;flex-direction:column;gap:14px;background:#FBF9F4}
+.agc-cart .foot:empty{display:none}
+.agc-cart .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-weight:700;color:#0B2545}
+.agc-cart .row b{font-family:Montserrat,sans-serif;font-size:24px;font-weight:800}
+.agc-cart .fine{font-size:13px;color:#5A6680}
+.agc-cart .agc-btn{width:100%}
+.agc-cart .agc-btn[disabled]{opacity:.5;cursor:not-allowed;filter:none}
+.agc-cart .empty{text-align:center;padding:48px 8px}
+.agc-cart .empty svg{margin:0 auto 14px;display:block}
+.agc-cart .empty h4{margin:0;font-family:Montserrat,sans-serif;font-size:18px;color:#0B2545}
+.agc-cart .empty p{margin:8px 0 22px}
+.agc-cart .items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.agc-cart .item{border:1px solid #E6DCC8;border-radius:16px;padding:16px}
+.agc-cart .item .h{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.agc-cart .item h4{margin:0;font-family:Montserrat,sans-serif;font-size:16px;color:#0B2545;line-height:1.3}
+.agc-cart .item .sub{font-size:13px;color:#5A6680}
+.agc-cart .item .lt{font-family:Montserrat,sans-serif;font-weight:800;color:#0B2545;white-space:nowrap}
+.agc-cart .item label{display:block;margin-top:12px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8A6A2C}
+.agc-cart .item select{margin-top:6px}
+.agc-cart .item .ctl{margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.agc-cart .qty{display:inline-flex;align-items:center;border:1px solid #D1C2A5;border-radius:999px;overflow:hidden}
+.agc-cart .qty button{width:38px;height:36px;border:0;background:#fff;font-size:18px;font-weight:700;color:#0B2545;cursor:pointer;padding:0}
+.agc-cart .qty button:hover{background:#F4ECDC}
+.agc-cart .qty span{min-width:30px;text-align:center;font-weight:700;color:#0B2545}
+.agc-cart .rm{border:0;background:none;color:#8A6A2C;font-weight:700;font-size:14px;cursor:pointer;padding:6px 0;text-decoration:underline}
+.agc-cart .back{border:0;background:none;padding:0;margin-bottom:16px;display:inline-flex;align-items:center;gap:6px;font-family:Montserrat,sans-serif;font-weight:700;font-size:14px;color:#0B2545;cursor:pointer}
+.agc-cart .summary{background:#F9F7F2;border:1px solid #E6DCC8;border-radius:16px;padding:14px 16px;margin-bottom:20px;font-size:14px}
+.agc-cart .summary div{display:flex;justify-content:space-between;gap:12px;padding:4px 0}
+.agc-cart .summary span{color:#33415C}
+.agc-cart .summary b{color:#0B2545;white-space:nowrap}
+.agc-cart form{display:flex;flex-direction:column;gap:14px}
+.agc-cart .f{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:700;color:#0B2545}
+.agc-cart .f em{font-style:normal;color:#B4442C}
+.agc-cart .f2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.agc-cart input[type=text],.agc-cart input[type=email],.agc-cart input[type=tel],.agc-cart select,.agc-cart textarea{width:100%;min-height:46px;padding:10px 14px;border:1px solid #D1C2A5;border-radius:12px;font:inherit;font-weight:400;color:#0B2545;background:#fff}
+.agc-cart textarea{min-height:84px;resize:vertical}
+.agc-cart .agree{display:flex;gap:10px;align-items:flex-start;font-size:14px;font-weight:400;color:#33415C}
+.agc-cart .agree input{margin-top:4px;width:18px;height:18px;accent-color:#C59B4E;flex:none}
+.agc-cart .agree a{color:#8A6A2C;font-weight:700;text-decoration:underline}
+.agc-cart .done{text-align:center;padding:36px 4px}
+.agc-cart .done .ok{width:64px;height:64px;border-radius:50%;background:#F4ECDC;display:grid;place-items:center;margin:0 auto 16px}
+.agc-cart .done h4{margin:0;font-family:Montserrat,sans-serif;font-size:22px;color:#0B2545}
+.agc-cart .done p{margin:10px 0 0}
+.agc-cart .done .no{display:inline-block;margin-top:14px;background:#0B2545;color:#C59B4E;font-family:Montserrat,sans-serif;font-weight:800;letter-spacing:.06em;padding:8px 16px;border-radius:999px}
+.agc-cart .done a{color:#8A6A2C;font-weight:700}
+@media (max-width:480px){.agc-cart .top,.agc-cart .body,.agc-cart .foot{padding-left:18px;padding-right:18px}.agc-cart .f2{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.agc-cart .panel,.agc-cart .scrim{transition:none}}
 </style>
 <div class="agc-site">
 <!-- ===== Top bar + Navigation ===== -->
@@ -328,6 +422,7 @@ html{scroll-behavior:smooth}
       </nav>
       <div class="agc-actions">
         <a class="agc-btn agc-btn-navy agc-enroll" href="#pricing">Enroll Now</a>
+        <button class="agc-cart-btn" type="button" aria-label="Open cart"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><span class="agc-cart-count" hidden>0</span></button>
         <button class="agc-burger" type="button" aria-label="Open menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0B2545" stroke-width="2.2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
       </div>
     </div>
@@ -375,8 +470,8 @@ html{scroll-behavior:smooth}
     <div class="agc-center"><div class="agc-eyebrow">Our Programs</div><h2 class="agc-h2">Meeting students wherever they are in their academic journey</h2></div>
     <div class="cards">
       <div class="card"><div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C59B4E" stroke-width="2" aria-hidden="true"><path d="M4 19V5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h6M8 11h6"/></svg></div><div class="k">Subject-specific 1-on-1</div><h3>AGC Core Tutoring</h3><p>Targeted instruction that bridges learning gaps and deepens comprehension — from foundational reading and math to high school calculus, sciences, and major exam prep. We build true subject fluency, not short-term memorization.</p><a class="more" href="#subjects">See subjects <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
-      <div class="card dark"><div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0B2545" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div><div class="k">Interactive virtual tutoring</div><h3>AGC Anywhere</h3><p>The same rigorous, personalized attention as our in-person sessions — delivered to your home with digital whiteboards, collaborative document sharing, flexible scheduling, and easy access to session records and progress notes.</p><a class="more" href="#pricing">View plans <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
-      <div class="card"><div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C59B4E" stroke-width="2" aria-hidden="true"><path d="M4 20h5v-5h5v-5h5V5"/><path d="M16 5h3v3"/></svg></div><div class="k">Executive functioning mentorship</div><h3>AGC Ascent Coaching</h3><p>1-on-1 mentorship for students who struggle with focus, motivation, task initiation, or school anxiety — building time management, task prioritization, organization, and study routines, with detailed session notes for parents.</p><a class="more" href="#pricing">View plans <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+      <div class="card dark"><div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0B2545" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div><div class="k">Interactive virtual tutoring</div><h3>AGC Anywhere</h3><p>The same rigorous, personalized attention as our in-person sessions — delivered to your home with digital whiteboards, collaborative document sharing, flexible scheduling, and easy access to session records and progress notes.</p><a class="more" href="#pricing" data-agc-program="anywhere">View plans <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+      <div class="card"><div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C59B4E" stroke-width="2" aria-hidden="true"><path d="M4 20h5v-5h5v-5h5V5"/><path d="M16 5h3v3"/></svg></div><div class="k">Executive functioning mentorship</div><h3>AGC Ascent Coaching</h3><p>1-on-1 mentorship for students who struggle with focus, motivation, task initiation, or school anxiety — building time management, task prioritization, organization, and study routines, with detailed session notes for parents.</p><a class="more" href="#pricing" data-agc-program="ascent">View plans <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
     </div>
   </div>
 </section>
@@ -581,11 +676,196 @@ var PLANS=[
 var root=document.querySelector('.agc-pricing'),list=root.querySelector('.plans');
 function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 list.innerHTML=PLANS.slice(0,SHOWN).map(function(p){
-  return '<div class="plan'+(p.dark?' dark':'')+'"><div class="head"><div><div class="k">'+esc(p.kicker)+'</div><h3>'+esc(p.name)+'</h3></div>'+(p.badge?'<span class="badge">'+esc(p.badge)+'</span>':'')+'</div>'+
+  return '<div class="plan'+(p.dark?' dark':'')+'" data-plan="'+esc(p.id)+'" data-name="'+esc(p.name)+'" data-kicker="'+esc(p.kicker)+'" data-amount="'+p.amount+'"><div class="head"><div><div class="k">'+esc(p.kicker)+'</div><h3>'+esc(p.name)+'</h3></div>'+(p.badge?'<span class="badge">'+esc(p.badge)+'</span>':'')+'</div>'+
     '<div class="price"><b>'+esc(p.price)+'</b><span>'+esc(p.note)+'</span></div>'+
     '<div class="meta"><span>'+esc(p.rate)+'</span>'+(p.save?'<span class="save">'+esc(p.save)+'</span>':'')+'</div>'+
     '<p class="desc">'+esc(p.desc)+'</p></div>';
 }).join('');
+})();
+
+/* ---- Cart & checkout ----
+   Each plan card with data-plan / data-name / data-amount gets a program picker and an "Add to cart" button.
+   The cart is saved in the browser (localStorage), so it carries over between the homepage and /plans.
+   Checkout opens an email to EMAIL with the order details — no card is charged on the site. */
+(function(){
+var EMAIL='support@agctutorials.com',KEY='agcCart';
+var PROGRAMS=[
+ {id:'core',name:'AGC Core Tutoring',sub:'Subject-specific 1-on-1'},
+ {id:'anywhere',name:'AGC Anywhere',sub:'Interactive virtual tutoring'},
+ {id:'ascent',name:'AGC Ascent Coaching',sub:'Executive functioning mentorship'}
+];
+var GRADES=['Pre-K','K','1st','2nd','3rd','4th','5th','6th','7th','8th','9th','10th','11th','12th'];
+function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
+function money(n){return '$'+n.toLocaleString('en-US');}
+function prog(id){for(var i=0;i<PROGRAMS.length;i++)if(PROGRAMS[i].id===id)return PROGRAMS[i];return PROGRAMS[0];}
+var cart=[];
+try{cart=JSON.parse(localStorage.getItem(KEY))||[];}catch(e){cart=[];}
+cart=cart.filter(function(i){return i&&i.plan&&i.name&&i.amount>0&&i.qty>0;});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(cart));}catch(e){}}
+function count(){return cart.reduce(function(s,i){return s+i.qty;},0);}
+function total(){return cart.reduce(function(s,i){return s+i.amount*i.qty;},0);}
+
+/* --- program picker + add button on every plan card --- */
+var BAG='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>';
+document.querySelectorAll('.agc-pricing .plan[data-plan]').forEach(function(card,n){
+  var id=card.getAttribute('data-plan'),g='agc-prog-'+id+'-'+n;
+  var box=document.createElement('div');
+  box.innerHTML='<fieldset class="agc-pick"><legend>Choose a program</legend>'+PROGRAMS.map(function(p){
+      return '<div><input type="radio" id="'+g+'-'+p.id+'" name="'+g+'" value="'+p.id+'"><label for="'+g+'-'+p.id+'"><span class="dot"></span><span class="t"><b>'+esc(p.name)+'</b><small>'+esc(p.sub)+'</small></span></label></div>';
+    }).join('')+'</fieldset>'+
+    '<p class="agc-pick-err" role="alert" hidden>Please choose a program first.</p>'+
+    '<button type="button" class="agc-btn '+(card.classList.contains('dark')?'agc-btn-gold':'agc-btn-navy')+' agc-add">'+BAG+'Add to cart</button>';
+  while(box.firstChild)card.appendChild(box.firstChild);
+  var err=card.querySelector('.agc-pick-err');
+  card.querySelector('.agc-pick').addEventListener('change',function(){err.hidden=true;});
+  card.querySelector('.agc-add').addEventListener('click',function(){
+    var c=card.querySelector('.agc-pick input:checked');
+    if(!c){err.hidden=false;card.querySelector('.agc-pick input').focus();return;}
+    add({plan:id,name:card.getAttribute('data-name'),kicker:card.getAttribute('data-kicker')||'',amount:+card.getAttribute('data-amount'),program:c.value},this);
+  });
+});
+/* "View plans" links on a program card preselect that program */
+document.querySelectorAll('[data-agc-program]').forEach(function(a){
+  a.addEventListener('click',function(){
+    var v=a.getAttribute('data-agc-program');
+    document.querySelectorAll('.agc-pricing .agc-pick input[value="'+v+'"]').forEach(function(r){r.checked=true;});
+    document.querySelectorAll('.agc-pricing .agc-pick-err').forEach(function(e){e.hidden=true;});
+  });
+});
+
+/* --- drawer --- */
+var root=document.createElement('div');
+root.className='agc agc-cart';
+root.innerHTML='<div class="scrim"></div><div class="panel" role="dialog" aria-modal="true" aria-labelledby="agcCartTitle">'+
+  '<div class="top"><h3 id="agcCartTitle">Your cart</h3><button type="button" class="x" aria-label="Close cart"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>'+
+  '<div class="body"></div><div class="foot"></div></div>';
+document.body.appendChild(root);
+var body=root.querySelector('.body'),foot=root.querySelector('.foot'),title=root.querySelector('#agcCartTitle');
+var view='cart',lastFocus=null,order=null;
+
+function add(item,btn){
+  var hit=null;
+  cart.forEach(function(i){if(i.plan===item.plan&&i.program===item.program)hit=i;});
+  if(hit)hit.qty++;else{item.qty=1;cart.push(item);}
+  save();badge(true);view='cart';open(btn);
+}
+function badge(bump){
+  var n=count();
+  document.querySelectorAll('.agc-cart-btn').forEach(function(b){
+    var c=b.querySelector('.agc-cart-count');c.textContent=n;c.hidden=!n;
+    b.setAttribute('aria-label',n?'Open cart, '+n+' item'+(n>1?'s':''):'Open cart');
+    if(bump){b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump');}
+  });
+}
+function open(from){
+  lastFocus=from||document.activeElement;render();
+  root.classList.add('open');document.documentElement.style.overflow='hidden';
+  setTimeout(function(){root.querySelector('.x').focus();},60);
+}
+function close(){
+  root.classList.remove('open');document.documentElement.style.overflow='';
+  if(view==='done')view='cart';
+  if(lastFocus&&lastFocus.focus)lastFocus.focus();
+}
+root.querySelector('.scrim').addEventListener('click',close);
+root.querySelector('.x').addEventListener('click',close);
+document.addEventListener('keydown',function(e){
+  if(!root.classList.contains('open'))return;
+  if(e.key==='Escape'){close();return;}
+  if(e.key==='Tab'){
+    var f=root.querySelectorAll('.panel button,.panel a,.panel input,.panel select,.panel textarea');
+    f=Array.prototype.filter.call(f,function(el){return !el.disabled&&el.offsetParent!==null;});
+    if(!f.length)return;var a=f[0],z=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus();}
+    else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus();}
+  }
+});
+document.querySelectorAll('.agc-cart-btn').forEach(function(b){b.addEventListener('click',function(){view='cart';open(b);});});
+
+function line(i){return i.name+' — '+prog(i.program).name;}
+function render(){
+  if(view==='checkout'&&!cart.length)view='cart';
+  title.textContent=view==='cart'?'Your cart':view==='checkout'?'Checkout':'Order sent';
+  if(view==='cart')renderCart();else if(view==='checkout')renderCheckout();else renderDone();
+}
+function renderCart(){
+  if(!cart.length){
+    body.innerHTML='<div class="empty"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#C59B4E" stroke-width="1.6" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><h4>Your cart is empty</h4><p>Pick a plan, choose a program, and add it here.</p><button type="button" class="agc-btn agc-btn-navy browse">Browse plans</button></div>';
+    foot.innerHTML='';
+    body.querySelector('.browse').addEventListener('click',function(){
+      close();var s=document.querySelector('.agc-pricing');
+      if(s)s.scrollIntoView({behavior:'smooth'});else location.href='/plans';
+    });
+    return;
+  }
+  body.innerHTML='<ul class="items">'+cart.map(function(i,k){
+    return '<li class="item"><div class="h"><div><h4>'+esc(i.name)+'</h4><div class="sub">'+esc(i.kicker)+(i.kicker?' · ':'')+money(i.amount)+' each</div></div><span class="lt">'+money(i.amount*i.qty)+'</span></div>'+
+      '<label for="agc-ci-'+k+'">Program</label><select id="agc-ci-'+k+'" data-k="'+k+'" class="prog">'+PROGRAMS.map(function(p){return '<option value="'+p.id+'"'+(p.id===i.program?' selected':'')+'>'+esc(p.name)+'</option>';}).join('')+'</select>'+
+      '<div class="ctl"><div class="qty"><button type="button" data-k="'+k+'" data-d="-1" aria-label="Decrease quantity">−</button><span aria-live="polite">'+i.qty+'</span><button type="button" data-k="'+k+'" data-d="1" aria-label="Increase quantity">+</button></div>'+
+      '<button type="button" class="rm" data-k="'+k+'">Remove</button></div></li>';
+  }).join('')+'</ul>';
+  foot.innerHTML='<div class="row"><span>Subtotal</span><b>'+money(total())+'</b></div><button type="button" class="agc-btn agc-btn-gold go">Proceed to checkout</button><p class="fine">No payment is taken online. After checkout our team confirms your schedule and sends a secure payment link.</p>';
+  body.querySelectorAll('.prog').forEach(function(s){s.addEventListener('change',function(){
+    var k=+s.getAttribute('data-k'),it=cart[k],dup=-1;
+    cart.forEach(function(o,j){if(j!==k&&o.plan===it.plan&&o.program===s.value)dup=j;});
+    if(dup>-1){cart[dup].qty+=it.qty;cart.splice(k,1);}else it.program=s.value;
+    save();badge();render();
+  });});
+  body.querySelectorAll('.qty button').forEach(function(b){b.addEventListener('click',function(){
+    var k=+b.getAttribute('data-k'),d=+b.getAttribute('data-d');
+    cart[k].qty+=d;if(cart[k].qty<1)cart.splice(k,1);
+    save();badge();render();
+    var again=body.querySelector('.qty button[data-k="'+k+'"][data-d="'+d+'"]');(again||root.querySelector('.x')).focus();
+  });});
+  body.querySelectorAll('.rm').forEach(function(b){b.addEventListener('click',function(){
+    cart.splice(+b.getAttribute('data-k'),1);save();badge();render();root.querySelector('.x').focus();
+  });});
+  foot.querySelector('.go').addEventListener('click',function(){view='checkout';render();body.scrollTop=0;body.querySelector('input').focus();});
+}
+function renderCheckout(){
+  body.innerHTML='<button type="button" class="back"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Back to cart</button>'+
+    '<div class="summary">'+cart.map(function(i){return '<div><span>'+esc(line(i))+(i.qty>1?' × '+i.qty:'')+'</span><b>'+money(i.amount*i.qty)+'</b></div>';}).join('')+'</div>'+
+    '<form id="agcCheckout" novalidate>'+
+    '<label class="f"><span>Parent / guardian name <em>*</em></span><input type="text" name="parent" autocomplete="name" required></label>'+
+    '<div class="f2"><label class="f"><span>Email <em>*</em></span><input type="email" name="email" autocomplete="email" required></label>'+
+    '<label class="f"><span>Phone <em>*</em></span><input type="tel" name="phone" autocomplete="tel" required></label></div>'+
+    '<div class="f2"><label class="f"><span>Student name <em>*</em></span><input type="text" name="student" required></label>'+
+    '<label class="f"><span>Grade <em>*</em></span><select name="grade" required><option value="">Select</option>'+GRADES.map(function(g){return '<option>'+g+'</option>';}).join('')+'</select></label></div>'+
+    '<label class="f"><span>Subjects or goals</span><textarea name="notes" placeholder="e.g. Algebra II, staying organized, SOL prep"></textarea></label>'+
+    '<label class="agree"><input type="checkbox" name="agree" required><span>I agree to the <a href="/terms" target="_blank" rel="noopener">Terms of Use</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>'+
+    '<p class="agc-err fine" role="alert" style="color:#B4442C;font-weight:700" hidden>Please fill in the required fields.</p>'+
+    '</form>';
+  foot.innerHTML='<div class="row"><span>Total</span><b>'+money(total())+'</b></div><button type="submit" form="agcCheckout" class="agc-btn agc-btn-gold">Place order</button><p class="fine">You’ll get a confirmation email with your schedule and a secure payment link.</p>';
+  body.querySelector('.back').addEventListener('click',function(){view='cart';render();body.querySelector('.prog,.browse').focus();});
+  var form=body.querySelector('form');
+  form.addEventListener("input",function(){body.querySelector(".agc-err").hidden=true;});
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var bad=Array.prototype.filter.call(form.elements,function(el){return el.willValidate&&!el.checkValidity();});
+    body.querySelector('.agc-err').hidden=!bad.length;
+    if(bad.length){bad[0].focus();return;}
+    var d={};['parent','email','phone','student','grade','notes'].forEach(function(n){d[n]=form.elements[n].value.trim();});
+    var no='AGC-'+Date.now().toString(36).toUpperCase().slice(-6);
+    var lines=['New enrollment order '+no,'',
+      'Parent / guardian: '+d.parent,'Email: '+d.email,'Phone: '+d.phone,'Student: '+d.student+' ('+d.grade+')',
+      d.notes?'Subjects / goals: '+d.notes:'','','Order:'].concat(cart.map(function(i){
+        return '- '+line(i)+' × '+i.qty+' = '+money(i.amount*i.qty);
+      }),['','Total: '+money(total())]).filter(function(s,j,a){return s!==''||a[j-1]!=='';});
+    var mail='mailto:'+EMAIL+'?subject='+encodeURIComponent('Enrollment order '+no+' — '+d.student)+'&body='+encodeURIComponent(lines.join('\n'));
+    order={no:no,name:d.parent.split(' ')[0],mail:mail};
+    cart=[];save();badge();view='done';render();
+    location.href=mail;
+  });
+}
+function renderDone(){
+  body.innerHTML='<div class="done"><div class="ok"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#8A6A2C" stroke-width="2.6" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div>'+
+    '<h4>Thank you, '+esc(order.name)+'!</h4><span class="no">'+esc(order.no)+'</span>'+
+    '<p>Your email app should have opened with your order details — press <b>Send</b> to submit it. We’ll reply within one business day to confirm your schedule and send a secure payment link.</p>'+
+    '<p>Email didn’t open? <a href="'+esc(order.mail)+'">Try again</a> or write to <a href="mailto:'+EMAIL+'">'+EMAIL+'</a> with your order number.</p></div>';
+  foot.innerHTML='<button type="button" class="agc-btn agc-btn-navy fin">Done</button>';
+  foot.querySelector('.fin').addEventListener('click',close);
+}
+badge();
 })();
 
 /* ---- Images: swap these for your GHL Media Library URLs if you like ---- */
