@@ -321,7 +321,7 @@ var PROGRAMS=[
 var GRADES=['Pre-K','K','1st','2nd','3rd','4th','5th','6th','7th','8th','9th','10th','11th','12th'];
 function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
 function money(n){return '$'+n.toLocaleString('en-US');}
-function prog(id){for(var i=0;i<PROGRAMS.length;i++)if(PROGRAMS[i].id===id)return PROGRAMS[i];return PROGRAMS[0];}
+function prog(id){for(var i=0;i<PROGRAMS.length;i++)if(PROGRAMS[i].id===id)return PROGRAMS[i];return null;}
 var cart=[];
 try{cart=JSON.parse(localStorage.getItem(KEY))||[];}catch(e){cart=[];}
 cart=cart.filter(function(i){return i&&i.plan&&i.name&&i.amount>0&&i.qty>0;});
@@ -329,32 +329,21 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(cart));}catch(e){}}
 function count(){return cart.reduce(function(s,i){return s+i.qty;},0);}
 function total(){return cart.reduce(function(s,i){return s+i.amount*i.qty;},0);}
 
-/* --- program picker + add button on every plan card --- */
+/* --- add button on every plan card (the program is chosen at checkout) --- */
 var BAG='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>';
-document.querySelectorAll('.agc-pricing .plan[data-plan]').forEach(function(card,n){
-  var id=card.getAttribute('data-plan'),g='agc-prog-'+id+'-'+n;
+var picked='';
+document.querySelectorAll('.agc-pricing .plan[data-plan]').forEach(function(card){
+  var id=card.getAttribute('data-plan');
   var box=document.createElement('div');
-  box.innerHTML='<fieldset class="agc-pick"><legend>Choose a program</legend>'+PROGRAMS.map(function(p){
-      return '<div><input type="radio" id="'+g+'-'+p.id+'" name="'+g+'" value="'+p.id+'"><label for="'+g+'-'+p.id+'"><span class="dot"></span><span class="t"><b>'+esc(p.name)+'</b><small>'+esc(p.sub)+'</small></span></label></div>';
-    }).join('')+'</fieldset>'+
-    '<p class="agc-pick-err" role="alert" hidden>Please choose a program first.</p>'+
-    '<button type="button" class="agc-btn '+(card.classList.contains('dark')?'agc-btn-gold':'agc-btn-navy')+' agc-add">'+BAG+'Add to cart</button>';
-  while(box.firstChild)card.appendChild(box.firstChild);
-  var err=card.querySelector('.agc-pick-err');
-  card.querySelector('.agc-pick').addEventListener('change',function(){err.hidden=true;});
+  box.innerHTML='<button type="button" class="agc-btn '+(card.classList.contains('dark')?'agc-btn-gold':'agc-btn-navy')+' agc-add">'+BAG+'Add to cart</button>';
+  card.appendChild(box.firstChild);
   card.querySelector('.agc-add').addEventListener('click',function(){
-    var c=card.querySelector('.agc-pick input:checked');
-    if(!c){err.hidden=false;card.querySelector('.agc-pick input').focus();return;}
-    add({plan:id,name:card.getAttribute('data-name'),kicker:card.getAttribute('data-kicker')||'',amount:+card.getAttribute('data-amount'),program:c.value},this);
+    add({plan:id,name:card.getAttribute('data-name'),kicker:card.getAttribute('data-kicker')||'',amount:+card.getAttribute('data-amount'),program:picked},this);
   });
 });
-/* "View plans" links on a program card preselect that program */
+/* "View plans" links on a program card prefill that program at checkout */
 document.querySelectorAll('[data-agc-program]').forEach(function(a){
-  a.addEventListener('click',function(){
-    var v=a.getAttribute('data-agc-program');
-    document.querySelectorAll('.agc-pricing .agc-pick input[value="'+v+'"]').forEach(function(r){r.checked=true;});
-    document.querySelectorAll('.agc-pricing .agc-pick-err').forEach(function(e){e.hidden=true;});
-  });
+  a.addEventListener('click',function(){picked=a.getAttribute('data-agc-program');});
 });
 
 /* --- drawer --- */
@@ -406,7 +395,7 @@ document.addEventListener('keydown',function(e){
 });
 document.querySelectorAll('.agc-cart-btn').forEach(function(b){b.addEventListener('click',function(){view='cart';open(b);});});
 
-function line(i){return i.name+' — '+prog(i.program).name;}
+function line(i){var p=prog(i.program);return i.name+(p?' — '+p.name:'');}
 function render(){
   if(view==='checkout'&&!cart.length)view='cart';
   title.textContent=view==='cart'?'Your cart':view==='checkout'?'Checkout':'Order sent';
@@ -414,7 +403,7 @@ function render(){
 }
 function renderCart(){
   if(!cart.length){
-    body.innerHTML='<div class="empty"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#C59B4E" stroke-width="1.6" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><h4>Your cart is empty</h4><p>Pick a plan, choose a program, and add it here.</p><button type="button" class="agc-btn agc-btn-navy browse">Browse plans</button></div>';
+    body.innerHTML='<div class="empty"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#C59B4E" stroke-width="1.6" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><h4>Your cart is empty</h4><p>Pick a plan and add it here.</p><button type="button" class="agc-btn agc-btn-navy browse">Browse plans</button></div>';
     foot.innerHTML='';
     body.querySelector('.browse').addEventListener('click',function(){
       close();var s=document.querySelector('.agc-pricing');
@@ -424,17 +413,10 @@ function renderCart(){
   }
   body.innerHTML='<ul class="items">'+cart.map(function(i,k){
     return '<li class="item"><div class="h"><div><h4>'+esc(i.name)+'</h4><div class="sub">'+esc(i.kicker)+(i.kicker?' · ':'')+money(i.amount)+' each</div></div><span class="lt">'+money(i.amount*i.qty)+'</span></div>'+
-      '<label for="agc-ci-'+k+'">Program</label><select id="agc-ci-'+k+'" data-k="'+k+'" class="prog">'+PROGRAMS.map(function(p){return '<option value="'+p.id+'"'+(p.id===i.program?' selected':'')+'>'+esc(p.name)+'</option>';}).join('')+'</select>'+
       '<div class="ctl"><div class="qty"><button type="button" data-k="'+k+'" data-d="-1" aria-label="Decrease quantity">−</button><span aria-live="polite">'+i.qty+'</span><button type="button" data-k="'+k+'" data-d="1" aria-label="Increase quantity">+</button></div>'+
       '<button type="button" class="rm" data-k="'+k+'">Remove</button></div></li>';
   }).join('')+'</ul>';
   foot.innerHTML='<div class="row"><span>Subtotal</span><b>'+money(total())+'</b></div><button type="button" class="agc-btn agc-btn-gold go">Proceed to checkout</button><p class="fine">No payment is taken online. After checkout our team confirms your schedule and sends a secure payment link.</p>';
-  body.querySelectorAll('.prog').forEach(function(s){s.addEventListener('change',function(){
-    var k=+s.getAttribute('data-k'),it=cart[k],dup=-1;
-    cart.forEach(function(o,j){if(j!==k&&o.plan===it.plan&&o.program===s.value)dup=j;});
-    if(dup>-1){cart[dup].qty+=it.qty;cart.splice(k,1);}else it.program=s.value;
-    save();badge();render();
-  });});
   body.querySelectorAll('.qty button').forEach(function(b){b.addEventListener('click',function(){
     var k=+b.getAttribute('data-k'),d=+b.getAttribute('data-d');
     cart[k].qty+=d;if(cart[k].qty<1)cart.splice(k,1);
@@ -448,8 +430,9 @@ function renderCart(){
 }
 function renderCheckout(){
   body.innerHTML='<button type="button" class="back"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Back to cart</button>'+
-    '<div class="summary">'+cart.map(function(i){return '<div><span>'+esc(line(i))+(i.qty>1?' × '+i.qty:'')+'</span><b>'+money(i.amount*i.qty)+'</b></div>';}).join('')+'</div>'+
+    '<div class="summary">'+cart.map(function(i){return '<div><span>'+esc(i.name)+(i.qty>1?' × '+i.qty:'')+'</span><b>'+money(i.amount*i.qty)+'</b></div>';}).join('')+'</div>'+
     '<form id="agcCheckout" novalidate>'+
+    cart.map(function(i,k){return '<label class="f"><span>Program'+(cart.length>1?' for '+esc(i.name):'')+' <em>*</em></span><select class="prog" data-k="'+k+'" required><option value="">Choose a program</option>'+PROGRAMS.map(function(p){return '<option value="'+p.id+'"'+(p.id===i.program?' selected':'')+'>'+esc(p.name)+' — '+esc(p.sub)+'</option>';}).join('')+'</select></label>';}).join('')+
     '<label class="f"><span>Parent / guardian name <em>*</em></span><input type="text" name="parent" autocomplete="name" required></label>'+
     '<div class="f2"><label class="f"><span>Email <em>*</em></span><input type="email" name="email" autocomplete="email" required></label>'+
     '<label class="f"><span>Phone <em>*</em></span><input type="tel" name="phone" autocomplete="tel" required></label></div>'+
@@ -460,7 +443,8 @@ function renderCheckout(){
     '<p class="agc-err fine" role="alert" style="color:#B4442C;font-weight:700" hidden>Please fill in the required fields.</p>'+
     '</form>';
   foot.innerHTML='<div class="row"><span>Total</span><b>'+money(total())+'</b></div><button type="submit" form="agcCheckout" class="agc-btn agc-btn-gold">Place order</button><p class="fine">You’ll get a confirmation email with your schedule and a secure payment link.</p>';
-  body.querySelector('.back').addEventListener('click',function(){view='cart';render();body.querySelector('.prog,.browse').focus();});
+  body.querySelector('.back').addEventListener('click',function(){view='cart';render();(body.querySelector('.qty button,.browse')||root.querySelector('.x')).focus();});
+  body.querySelectorAll('.prog').forEach(function(s){s.addEventListener('change',function(){cart[+s.getAttribute('data-k')].program=s.value;save();});});
   var form=body.querySelector('form');
   form.addEventListener("input",function(){body.querySelector(".agc-err").hidden=true;});
   form.addEventListener('submit',function(e){
