@@ -186,6 +186,7 @@ html{scroll-behavior:smooth}
 .agc-cart form{display:flex;flex-direction:column;gap:14px}
 .agc-cart .f{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:700;color:#0B2545}
 .agc-cart .f em{font-style:normal;color:#B4442C}
+.agc-cart .f[hidden]{display:none}
 .agc-cart .f2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .agc-cart input[type=text],.agc-cart input[type=email],.agc-cart input[type=tel],.agc-cart select,.agc-cart textarea{width:100%;min-height:46px;padding:10px 14px;border:1px solid #D1C2A5;border-radius:12px;font:inherit;font-weight:400;color:#0B2545;background:#fff}
 .agc-cart textarea{min-height:84px;resize:vertical}
@@ -318,6 +319,7 @@ var PROGRAMS=[
  {id:'anywhere',name:'AGC Anywhere',sub:'Interactive virtual tutoring'},
  {id:'ascent',name:'AGC Ascent Coaching',sub:'Executive functioning mentorship'}
 ];
+var SUBJECTS=['Math','Science','English','History','Writing','Reading'];
 var GRADES=['Pre-K','K','1st','2nd','3rd','4th','5th','6th','7th','8th','9th','10th','11th','12th'];
 function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
 function money(n){return '$'+n.toLocaleString('en-US');}
@@ -395,7 +397,7 @@ document.addEventListener('keydown',function(e){
 });
 document.querySelectorAll('.agc-cart-btn').forEach(function(b){b.addEventListener('click',function(){view='cart';open(b);});});
 
-function line(i){var p=prog(i.program);return i.name+(p?' — '+p.name:'');}
+function line(i){var p=prog(i.program);return i.name+(p?' — '+p.name+(i.program==='core'&&i.subject?' ('+i.subject+')':''):'');}
 function render(){
   if(view==='checkout'&&!cart.length)view='cart';
   title.textContent=view==='cart'?'Your cart':view==='checkout'?'Checkout':'Order sent';
@@ -432,7 +434,8 @@ function renderCheckout(){
   body.innerHTML='<button type="button" class="back"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Back to cart</button>'+
     '<div class="summary">'+cart.map(function(i){return '<div><span>'+esc(i.name)+(i.qty>1?' × '+i.qty:'')+'</span><b>'+money(i.amount*i.qty)+'</b></div>';}).join('')+'</div>'+
     '<form id="agcCheckout" novalidate>'+
-    cart.map(function(i,k){return '<label class="f"><span>Program'+(cart.length>1?' for '+esc(i.name):'')+' <em>*</em></span><select class="prog" data-k="'+k+'" required><option value="">Choose a program</option>'+PROGRAMS.map(function(p){return '<option value="'+p.id+'"'+(p.id===i.program?' selected':'')+'>'+esc(p.name)+' — '+esc(p.sub)+'</option>';}).join('')+'</select></label>';}).join('')+
+    cart.map(function(i,k){return '<label class="f"><span>Program'+(cart.length>1?' for '+esc(i.name):'')+' <em>*</em></span><select class="prog" data-k="'+k+'" required><option value="">Choose a program</option>'+PROGRAMS.map(function(p){return '<option value="'+p.id+'"'+(p.id===i.program?' selected':'')+'>'+esc(p.name)+' — '+esc(p.sub)+'</option>';}).join('')+'</select></label>'+
+      '<label class="f"'+(i.program==='core'?'':' hidden')+'><span>Subject'+(cart.length>1?' for '+esc(i.name):'')+' <em>*</em></span><select class="subj" data-k="'+k+'" required'+(i.program==='core'?'':' disabled')+'><option value="">Choose a subject</option>'+SUBJECTS.map(function(s){return '<option'+(s===i.subject?' selected':'')+'>'+s+'</option>';}).join('')+'</select></label>';}).join('')+
     '<label class="f"><span>Parent / guardian name <em>*</em></span><input type="text" name="parent" autocomplete="name" required></label>'+
     '<div class="f2"><label class="f"><span>Email <em>*</em></span><input type="email" name="email" autocomplete="email" required></label>'+
     '<label class="f"><span>Phone <em>*</em></span><input type="tel" name="phone" autocomplete="tel" required></label></div>'+
@@ -444,7 +447,12 @@ function renderCheckout(){
     '</form>';
   foot.innerHTML='<div class="row"><span>Total</span><b>'+money(total())+'</b></div><button type="submit" form="agcCheckout" class="agc-btn agc-btn-gold">Place order</button><p class="fine">You’ll get a confirmation email with your schedule and a secure payment link.</p>';
   body.querySelector('.back').addEventListener('click',function(){view='cart';render();(body.querySelector('.qty button,.browse')||root.querySelector('.x')).focus();});
-  body.querySelectorAll('.prog').forEach(function(s){s.addEventListener('change',function(){cart[+s.getAttribute('data-k')].program=s.value;save();});});
+  body.querySelectorAll('.prog').forEach(function(s){s.addEventListener('change',function(){
+    var k=s.getAttribute('data-k'),sub=body.querySelector('.subj[data-k="'+k+'"]'),core=s.value==='core';
+    cart[+k].program=s.value;save();
+    sub.disabled=!core;sub.parentNode.hidden=!core;
+  });});
+  body.querySelectorAll('.subj').forEach(function(s){s.addEventListener('change',function(){cart[+s.getAttribute('data-k')].subject=s.value;save();});});
   var form=body.querySelector('form');
   form.addEventListener("input",function(){body.querySelector(".agc-err").hidden=true;});
   form.addEventListener('submit',function(e){
