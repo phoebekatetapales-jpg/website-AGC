@@ -47,16 +47,17 @@ html{scroll-behavior:smooth}
 .agc-nav .agc-bar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:12px;padding-bottom:12px}
 .agc-nav .agc-logo img{height:58px;width:auto;border-radius:6px}
 .agc-nav .agc-links{display:flex;gap:28px;font-family:Montserrat,sans-serif;font-weight:600;font-size:15px}
-.agc-nav .agc-links a{color:#0B2545;padding:10px 0}
+.agc-nav .agc-links a{color:#0B2545;padding:10px 0;white-space:nowrap}
 .agc-nav .agc-links a:hover{color:#8A6A2C}
 .agc-nav .agc-actions{display:flex;gap:12px;align-items:center}
 .agc-nav .agc-actions .agc-btn{min-height:44px;padding:0 22px;font-size:14px;width:auto}
+@media (max-width:1300px){.agc-nav .agc-links{gap:20px}}
 .agc-nav .agc-burger{display:none;width:48px;height:48px;border-radius:12px;border:1px solid #D1C2A5;background:#fff;align-items:center;justify-content:center;cursor:pointer;padding:0}
 .agc-nav .agc-mobile{display:none;border-top:1px solid #E6DCC8;background:#fff}
 .agc-nav .agc-mobile.open{display:block;max-height:calc(100vh - 80px);overflow-y:auto}
 .agc-nav .agc-mobile a{display:block;padding:14px 0;border-bottom:1px solid #F0E9DB;font-family:Montserrat,sans-serif;font-weight:600;color:#0B2545}
 .agc-nav .agc-mobile a.agc-btn{display:flex;margin:18px 0 22px;width:100%;border-bottom:0;padding:0 28px;color:#0B2545}
-@media (max-width:1080px){
+@media (max-width:1180px){
   .agc-nav .agc-links,.agc-nav .agc-actions .agc-enroll{display:none}
   .agc-nav .agc-burger{display:inline-flex}
 }
@@ -434,7 +435,7 @@ html{scroll-behavior:smooth}
     <div class="agc-wrap agc-bar">
       <a class="agc-logo" href="#home"><img data-agc-img="logo" alt="AGC Tutorials — Aspire. Grow. Conquer." width="180" height="58"></a>
       <nav class="agc-links" aria-label="Main">
-        <a href="#home">Home</a><a href="#about">About</a><a href="#programs">Programs</a><a href="#subjects">Subjects</a><a href="#pricing">Pricing</a><a href="#founder">Our Founder</a><a href="#contact">Contact</a>
+        <a href="#home">Home</a><a href="#about">About</a><a href="#programs">Programs</a><a href="#subjects">Subjects</a><a href="#pricing">Pricing</a><a href="#founder">Our Founder</a><a href="/tutors">Tutors</a><a href="#contact">Contact</a>
       </nav>
       <div class="agc-actions">
         <a class="agc-btn agc-btn-navy agc-enroll" href="https://agctutorials.com/agc-lms" target="_blank" rel="noopener">LOG IN</a>
@@ -444,7 +445,7 @@ html{scroll-behavior:smooth}
     </div>
     <div class="agc-mobile">
       <div class="agc-wrap">
-        <a href="#home">Home</a><a href="#about">About</a><a href="#programs">Programs</a><a href="#subjects">Subjects</a><a href="#pricing">Pricing</a><a href="#founder">Our Founder</a><a href="#contact">Contact</a>
+        <a href="#home">Home</a><a href="#about">About</a><a href="#programs">Programs</a><a href="#subjects">Subjects</a><a href="#pricing">Pricing</a><a href="#founder">Our Founder</a><a href="/tutors">Tutors</a><a href="#contact">Contact</a>
         <a class="agc-btn agc-btn-gold" href="https://agctutorials.com/agc-lms" target="_blank" rel="noopener">LOG IN</a>
       </div>
     </div>
