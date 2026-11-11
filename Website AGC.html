@@ -51,7 +51,7 @@ html{scroll-behavior:smooth}
 .agc-nav .agc-links a:hover{color:#8A6A2C}
 .agc-nav .agc-actions{display:flex;gap:12px;align-items:center}
 .agc-nav .agc-actions .agc-btn{min-height:44px;padding:0 22px;font-size:14px;width:auto}
-@media (max-width:1300px){.agc-nav .agc-links{gap:20px}}
+@media (max-width:1300px){.agc-nav .agc-links{gap:16px}}
 .agc-nav .agc-burger{display:none;width:48px;height:48px;border-radius:12px;border:1px solid #D1C2A5;background:#fff;align-items:center;justify-content:center;cursor:pointer;padding:0}
 .agc-nav .agc-mobile{display:none;border-top:1px solid #E6DCC8;background:#fff}
 .agc-nav .agc-mobile.open{display:block;max-height:calc(100vh - 80px);overflow-y:auto}
@@ -218,6 +218,21 @@ html{scroll-behavior:smooth}
 .agc-founder .pillar p{font-size:15px}
 @media (max-width:960px){.agc-founder .agc-grid2{grid-template-columns:1fr;gap:40px}.agc-founder .left{max-width:440px;width:100%;margin:0 auto}}
 @media (max-width:560px){.agc-founder .photo{border-radius:22px}.agc-founder .pillar{padding:16px;align-items:flex-start}}
+/* ---- Our Tutors ---- */
+.agc-tutors{background:#fff}
+.agc-tutors .agc-lead{margin-top:14px;max-width:640px;margin-left:auto;margin-right:auto}
+.agc-tutors .cards{margin-top:44px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.agc-tutors .card{background:#F9F7F2;border:1px solid #E6DCC8;border-radius:22px;padding:30px 28px;display:flex;flex-direction:column;align-items:flex-start}
+.agc-tutors .av{width:76px;height:76px;border-radius:50%;background:#0B2545;color:#C59B4E;display:flex;align-items:center;justify-content:center;font-family:Montserrat,sans-serif;font-weight:800;font-size:24px;object-fit:cover}
+.agc-tutors .card h3{margin-top:18px;font-weight:700;font-size:21px;color:#0B2545}
+.agc-tutors .card .r{margin-top:4px;font-weight:700;font-size:14px;color:#8A6A2C}
+.agc-tutors .card p{margin-top:12px;font-size:15px}
+.agc-tutors .tags{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+.agc-tutors .tags span{background:#fff;border:1px solid #E6DCC8;border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700;color:#0B2545}
+.agc-tutors .join{margin-top:36px;text-align:center;font-weight:600;color:#0B2545}
+.agc-tutors .join a{color:#8A6A2C;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+@media (max-width:1000px){.agc-tutors .cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.agc-tutors .cards{grid-template-columns:1fr;gap:16px}.agc-tutors .card{padding:24px 22px}}
 /* ---- Contact / Call to action ---- */
 .agc-cta{background:#fff;padding:80px 0}
 .agc-cta .band{background-color:#0B2545;background-image:linear-gradient(rgba(197,155,78,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(197,155,78,.14) 1px,transparent 1px);background-size:64px 64px;border-radius:28px;padding:64px 48px;display:flex;flex-wrap:wrap;gap:32px;align-items:center;justify-content:space-between}
@@ -434,7 +449,7 @@ html{scroll-behavior:smooth}
     <div class="agc-wrap agc-bar">
       <a class="agc-logo" href="#home"><img data-agc-img="logo" alt="AGC Tutorials — Aspire. Grow. Conquer." width="180" height="58"></a>
       <nav class="agc-links" aria-label="Main">
-        <a href="#home">Home</a><a href="#about">About</a><a href="#programs">Programs</a><a href="#subjects">Subjects</a><a href="#pricing">Pricing</a><a href="#founder">Our Founder</a><a href="/tutors">Tutors</a><a href="#contact">Contact</a>
+        <a href="#home">Home</a><a href="#about">About</a><a href="#programs">Programs</a><a href="#subjects">Subjects</a><a href="#pricing">Pricing</a><a href="#founder">Our Founder</a><a href="#tutors">Tutors</a><a href="/tutors">Careers</a><a href="#contact">Contact</a>
       </nav>
       <div class="agc-actions">
         <a class="agc-btn agc-btn-navy agc-enroll" href="https://agctutorials.com/agc-lms" target="_blank" rel="noopener">LOG IN</a>
@@ -444,7 +459,7 @@ html{scroll-behavior:smooth}
     </div>
     <div class="agc-mobile">
       <div class="agc-wrap">
-        <a href="#home">Home</a><a href="#about">About</a><a href="#programs">Programs</a><a href="#subjects">Subjects</a><a href="#pricing">Pricing</a><a href="#founder">Our Founder</a><a href="/tutors">Tutors</a><a href="#contact">Contact</a>
+        <a href="#home">Home</a><a href="#about">About</a><a href="#programs">Programs</a><a href="#subjects">Subjects</a><a href="#pricing">Pricing</a><a href="#founder">Our Founder</a><a href="#tutors">Tutors</a><a href="/tutors">Careers</a><a href="#contact">Contact</a>
         <a class="agc-btn agc-btn-gold" href="https://agctutorials.com/agc-lms" target="_blank" rel="noopener">LOG IN</a>
       </div>
     </div>
@@ -611,6 +626,23 @@ html{scroll-behavior:smooth}
         <div class="pillar"><div class="l">C</div><div><b>Transparent family partnership</b><p>Parents are active, informed partners in their child’s progress.</p></div></div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ===== Our Tutors ===== -->
+<section id="tutors" class="agc agc-tutors agc-sec">
+  <div class="agc-wrap">
+    <div class="agc-center">
+      <div class="agc-eyebrow">Our Tutors</div>
+      <h2 class="agc-h2">Meet the educators behind AGC</h2>
+      <p class="agc-lead">Every AGC tutor is hand-selected and matched to students by personality, expertise, and schedule.</p>
+    </div>
+    <div class="cards">
+      <div class="card"><div class="av" aria-hidden="true">TN</div><h3>Tutor Name</h3><div class="r">Math &amp; Science Tutor</div><p>Short bio placeholder — teaching background, approach, and the grade levels this tutor supports.</p><div class="tags"><span>Algebra</span><span>Geometry</span><span>Chemistry</span></div></div>
+      <div class="card"><div class="av" aria-hidden="true">TN</div><h3>Tutor Name</h3><div class="r">Reading &amp; Writing Tutor</div><p>Short bio placeholder — teaching background, approach, and the grade levels this tutor supports.</p><div class="tags"><span>Reading</span><span>Writing</span><span>ELA</span></div></div>
+      <div class="card"><div class="av" aria-hidden="true">TN</div><h3>Tutor Name</h3><div class="r">Executive Functioning Coach</div><p>Short bio placeholder — teaching background, approach, and the grade levels this tutor supports.</p><div class="tags"><span>Study Skills</span><span>Organization</span><span>Test Prep</span></div></div>
+    </div>
+    <p class="join">Interested in teaching with AGC? <a href="/tutors">Explore careers</a></p>
   </div>
 </section>
 
@@ -935,6 +967,7 @@ badge();
     ['.agc-adv .agc-center',''],['.agc-adv .card',''],
     ['.agc-pricing .agc-center',''],['.agc-pricing .plan',''],
     ['.agc-founder .left','agc-rv-left'],['.agc-founder .agc-eyebrow',''],['.agc-founder .agc-h2',''],['.agc-founder .role',''],['.agc-founder .agc-lead',''],['.agc-founder .pillar','agc-rv-right'],
+    ['.agc-tutors .agc-center',''],['.agc-tutors .card',''],
     ['.agc-cta .band',''],['.agc-footer .cols > div','']
   ];
   var io=new IntersectionObserver(function(entries){
