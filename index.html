@@ -414,6 +414,23 @@ html{scroll-behavior:smooth}
 .agc-cart .done a{color:#8A6A2C;font-weight:700}
 @media (max-width:480px){.agc-cart .top,.agc-cart .body,.agc-cart .foot{padding-left:18px;padding-right:18px}.agc-cart .f2{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.agc-cart .panel,.agc-cart .scrim{transition:none}}
+
+/* ---- Nav dropdown (Programs) ---- */
+.agc-nav .agc-dd{position:relative;display:flex;align-items:center}
+.agc-nav .agc-dd-btn{display:inline-flex;align-items:center;gap:6px;background:none;border:0;padding:10px 0;margin:0;cursor:pointer;font:inherit;color:#0B2545;white-space:nowrap}
+.agc-nav .agc-dd-btn:hover,.agc-nav .agc-dd.open .agc-dd-btn{color:#8A6A2C}
+.agc-nav .agc-dd-btn:focus-visible{outline:3px solid #C59B4E;outline-offset:3px}
+.agc-nav .agc-dd-btn svg{transition:transform .2s}
+.agc-nav .agc-dd.open .agc-dd-btn svg{transform:rotate(180deg)}
+.agc-nav .agc-dd-menu{position:absolute;top:100%;left:50%;transform:translateX(-50%);padding-top:10px;display:none;z-index:60}
+.agc-nav .agc-dd.open .agc-dd-menu{display:block}
+@media (hover:hover){.agc-nav .agc-dd:hover .agc-dd-menu{display:block}.agc-nav .agc-dd:hover .agc-dd-btn svg{transform:rotate(180deg)}}
+.agc-nav .agc-dd-list{min-width:200px;background:#fff;border:1px solid #E6DCC8;border-radius:14px;box-shadow:0 14px 34px rgba(11,37,69,.14);padding:8px;display:flex;flex-direction:column}
+.agc-nav .agc-dd-list a{display:block;padding:10px 14px;border-radius:10px;color:#0B2545;white-space:nowrap}
+.agc-nav .agc-dd-list a:hover{background:#F9F7F2;color:#8A6A2C}
+.agc-nav .agc-dd-list a::after{display:none}
+.agc-nav .agc-mobile .agc-m-group{padding:14px 0 6px;font-family:Montserrat,sans-serif;font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#8A6A2C}
+.agc-nav .agc-mobile a.agc-m-sub{padding-left:16px}
 </style>
 <div class="agc-site">
 <!-- ===== Top bar + Navigation ===== -->
@@ -434,7 +451,7 @@ html{scroll-behavior:smooth}
     <div class="agc-wrap agc-bar">
       <a class="agc-logo" href="#home"><img data-agc-img="logo" alt="AGC Tutorials — Aspire. Grow. Conquer." width="180" height="58"></a>
       <nav class="agc-links" aria-label="Main">
-        <a href="#home">Home</a><a href="#about">About</a><a href="#programs">Programs</a><a href="#subjects">Subjects</a><a href="#pricing">Pricing</a><a href="#founder">Our Founder</a><a href="/our-tutors">Tutors</a><a href="/tutors">Careers</a><a href="#contact">Contact</a>
+        <a href="#home">Home</a><a href="#about">About</a><div class="agc-dd"><button class="agc-dd-btn" type="button" aria-expanded="false" aria-haspopup="true">Programs<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="agc-dd-menu"><div class="agc-dd-list"><a href="#programs">Our Programs</a><a href="#subjects">Subjects</a><a href="#pricing">Pricing</a></div></div></div><a href="#founder">Our Founder</a><a href="/our-tutors">Tutors</a><a href="/tutors">Careers</a><a href="#contact">Contact</a>
       </nav>
       <div class="agc-actions">
         <a class="agc-btn agc-btn-navy agc-enroll" href="https://agctutorials.com/agc-lms" target="_blank" rel="noopener">LOG IN</a>
@@ -444,7 +461,7 @@ html{scroll-behavior:smooth}
     </div>
     <div class="agc-mobile">
       <div class="agc-wrap">
-        <a href="#home">Home</a><a href="#about">About</a><a href="#programs">Programs</a><a href="#subjects">Subjects</a><a href="#pricing">Pricing</a><a href="#founder">Our Founder</a><a href="/our-tutors">Tutors</a><a href="/tutors">Careers</a><a href="#contact">Contact</a>
+        <a href="#home">Home</a><a href="#about">About</a><div class="agc-m-group">Programs</div><a class="agc-m-sub" href="#programs">Our Programs</a><a class="agc-m-sub" href="#subjects">Subjects</a><a class="agc-m-sub" href="#pricing">Pricing</a><a href="#founder">Our Founder</a><a href="/our-tutors">Tutors</a><a href="/tutors">Careers</a><a href="#contact">Contact</a>
         <a class="agc-btn agc-btn-gold" href="https://agctutorials.com/agc-lms" target="_blank" rel="noopener">LOG IN</a>
       </div>
     </div>
@@ -663,6 +680,19 @@ var topBar=root.querySelector('.agc-top');
 function pin(){root.style.top=-(topBar?topBar.offsetHeight:0)+'px';}
 function stuck(){root.classList.toggle('agc-stuck',window.scrollY>(topBar?topBar.offsetHeight:0));}
 pin();window.addEventListener('resize',pin);window.addEventListener('scroll',stuck,{passive:true});stuck();
+})();
+
+/* ---- Nav dropdown ---- */
+(function(){
+document.querySelectorAll('.agc-nav .agc-dd').forEach(function(dd){
+  var b=dd.querySelector('.agc-dd-btn');
+  function set(o){dd.classList.toggle('open',o);b.setAttribute('aria-expanded',o?'true':'false');}
+  b.addEventListener('click',function(e){e.stopPropagation();set(!dd.classList.contains('open'));});
+  dd.querySelectorAll('.agc-dd-list a').forEach(function(a){a.addEventListener('click',function(){set(false);});});
+  document.addEventListener('click',function(e){if(!dd.contains(e.target))set(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&dd.classList.contains('open')){set(false);b.focus();}});
+  dd.addEventListener('focusout',function(e){if(!dd.contains(e.relatedTarget))set(false);});
+});
 })();
 
 /* ---- Subjects (tabs) ---- */
