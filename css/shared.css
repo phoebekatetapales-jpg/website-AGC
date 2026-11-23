@@ -1,0 +1,15 @@
+/* =====================================================================
+   AGC Tutorials — base styles shared by every page.
+   Load order: shared.css → <page>.css → footer.css
+   Brand: navy #0B2545 · gold #C59B4E · cream #F9F7F2 · Montserrat + Nunito Sans
+   ===================================================================== */
+
+html{scroll-behavior:smooth}
+.agc *,.agc *::before,.agc *::after{box-sizing:border-box}
+.agc p{margin:0}
+.agc img{max-width:100%;height:auto;display:block}
+.agc a{text-decoration:none}
+.agc .agc-wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+.agc .agc-btn:hover{filter:brightness(1.08)}
+.agc .agc-btn-navy{background:#0B2545;color:#fff}
+.agc-nav .agc-logo img{height:58px;width:auto;border-radius:6px}

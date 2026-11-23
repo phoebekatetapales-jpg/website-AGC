@@ -1,0 +1,89 @@
+/* =====================================================================
+   AGC Tutorials — Privacy Policy page styles (privacy.html).
+   Base styles: css/shared.css · Footer: css/footer.css
+   ===================================================================== */
+
+body{margin:0;background:#fff}
+.agc{font-family:'Nunito Sans',system-ui,-apple-system,'Segoe UI',sans-serif;color:#33415C;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;text-align:left}
+.agc h1,.agc h2,.agc h3{font-family:Montserrat,system-ui,sans-serif;color:#0B2545;margin:0;line-height:1.15}
+.agc a:focus-visible{outline:3px solid #C59B4E;outline-offset:3px}
+.agc .agc-eyebrow{font-weight:700;font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:#8A6A2C}
+.agc .agc-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:44px;padding:0 22px;border-radius:999px;font-family:Montserrat,sans-serif;font-weight:700;font-size:14px;border:2px solid transparent;cursor:pointer;transition:filter .15s}
+@media (max-width:768px){.agc .agc-wrap{padding:0 16px}}
+
+/* ---- Top bar + header ---- */
+.agc-nav{position:sticky;top:0;z-index:1000}
+.agc-nav .agc-top{background:#0B2545;color:#E8E1D2;font-size:14px}
+.agc-nav .agc-top .agc-wrap{display:flex;flex-wrap:wrap;gap:8px 28px;justify-content:space-between;align-items:center;padding-top:10px;padding-bottom:10px}
+.agc-nav .agc-top span{display:flex;gap:8px;align-items:center}
+.agc-nav .agc-top a{color:#E8E1D2}
+.agc-nav .agc-top a.gold{color:#C59B4E;font-weight:700}
+.agc-nav header{background:#fff;border-bottom:1px solid #E6DCC8;box-shadow:0 8px 24px rgba(11,37,69,.06)}
+.agc-nav .agc-bar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:12px;padding-bottom:12px}
+.agc-nav .agc-links{display:flex;gap:28px;font-family:Montserrat,sans-serif;font-weight:600;font-size:15px}
+.agc-nav .agc-links a{color:#0B2545;padding:10px 0}
+.agc-nav .agc-links a:hover{color:#8A6A2C}
+@media (max-width:1080px){.agc-nav .agc-links{display:none}}
+@media (max-width:640px){
+  .agc-nav .agc-top .loc{display:none}
+  .agc-nav .agc-top .agc-wrap{justify-content:center}
+  .agc-nav .agc-logo img{height:44px}
+}
+
+/* ---- Hero ---- */
+.agc-hero{background:#F7F3E8;border-bottom:1px solid #E6DCC8}
+.agc-hero .agc-wrap{padding-top:64px;padding-bottom:56px}
+.agc-hero h1{margin-top:12px;font-weight:800;font-size:clamp(32px,5vw,52px)}
+.agc-hero .meta{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px}
+.agc-hero .meta span{background:#fff;border:1px solid #E6DCC8;border-radius:999px;padding:6px 14px;font-size:14px;color:#0B2545}
+.agc-hero .meta b{font-weight:700;color:#8A6A2C;margin-right:4px}
+
+/* ---- Policy body ---- */
+.agc-policy .agc-wrap{display:grid;grid-template-columns:260px minmax(0,1fr);gap:56px;padding-top:56px;padding-bottom:88px}
+.agc-policy .toc{position:sticky;top:150px;align-self:start;border-left:2px solid #E6DCC8;padding-left:18px}
+.agc-policy .toc h4{margin:0 0 10px;font-family:Montserrat,sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#8A6A2C}
+.agc-policy .toc a{display:block;padding:6px 0;font-size:14px;color:#33415C;line-height:1.4}
+.agc-policy .toc a:hover{color:#0B2545}
+.agc-policy article{max-width:780px}
+.agc-policy .intro{font-size:18px;color:#0B2545}
+.agc-policy section{scroll-margin-top:150px;margin-top:48px}
+.agc-policy h2{display:flex;gap:14px;align-items:baseline;font-size:clamp(20px,2.4vw,26px);font-weight:800}
+.agc-policy h2 .n{flex:none;font-size:15px;color:#8A6A2C}
+.agc-policy section > p{margin-top:14px}
+.agc-policy ul,.agc-policy ol{margin:16px 0 0;padding-left:22px}
+.agc-policy li{margin-top:10px;padding-left:4px}
+.agc-policy li::marker{color:#C59B4E;font-weight:700}
+.agc-policy li strong{color:#0B2545}
+.agc-policy .callout{margin-top:18px;background:#0B2545;color:#E8E1D2;border-radius:14px;padding:18px 22px;font-weight:600}
+.agc-policy .callout strong{color:#C59B4E}
+.agc-policy .contact{margin-top:56px;background:#F7F3E8;border:1px solid #E6DCC8;border-radius:18px;padding:32px}
+.agc-policy .contact h2{display:block}
+.agc-policy .contact dl{margin:20px 0 0;display:grid;grid-template-columns:auto 1fr;gap:8px 20px}
+.agc-policy .contact dt{font-weight:700;color:#0B2545}
+.agc-policy .contact dd{margin:0;word-break:break-word}
+.agc-policy .contact a{color:#8A6A2C;font-weight:700}
+@media (max-width:900px){
+  .agc-policy .agc-wrap{grid-template-columns:1fr;gap:0;padding-top:40px;padding-bottom:64px}
+  .agc-policy .toc{display:none}
+}
+@media (max-width:560px){.agc-policy .contact{padding:22px}.agc-policy .contact dl{grid-template-columns:1fr;gap:2px}.agc-policy .contact dd{margin-bottom:10px}}
+
+/* ---- Footer ---- */
+@media print{.agc-nav,.agc-footer,.agc-policy .toc{display:none}.agc-policy .agc-wrap{display:block}}
+
+/* ---- Nav dropdown (Programs) ---- */
+.agc-nav .agc-dd{position:relative;display:flex;align-items:center}
+.agc-nav .agc-dd-btn{display:inline-flex;align-items:center;gap:6px;background:none;border:0;padding:10px 0;margin:0;cursor:pointer;font:inherit;color:#0B2545;white-space:nowrap}
+.agc-nav .agc-dd-btn:hover,.agc-nav .agc-dd.open .agc-dd-btn{color:#8A6A2C}
+.agc-nav .agc-dd-btn:focus-visible{outline:3px solid #C59B4E;outline-offset:3px}
+.agc-nav .agc-dd-btn svg{transition:transform .2s}
+.agc-nav .agc-dd.open .agc-dd-btn svg{transform:rotate(180deg)}
+.agc-nav .agc-dd-menu{position:absolute;top:100%;left:50%;transform:translateX(-50%);padding-top:10px;display:none;z-index:60}
+.agc-nav .agc-dd.open .agc-dd-menu{display:block}
+@media (hover:hover){.agc-nav .agc-dd:hover .agc-dd-menu{display:block}.agc-nav .agc-dd:hover .agc-dd-btn svg{transform:rotate(180deg)}}
+.agc-nav .agc-dd-list{min-width:200px;background:#fff;border:1px solid #E6DCC8;border-radius:14px;box-shadow:0 14px 34px rgba(11,37,69,.14);padding:8px;display:flex;flex-direction:column}
+.agc-nav .agc-dd-list a{display:block;padding:10px 14px;border-radius:10px;color:#0B2545;white-space:nowrap}
+.agc-nav .agc-dd-list a:hover{background:#F9F7F2;color:#8A6A2C}
+.agc-nav .agc-dd-list a::after{display:none}
+.agc-nav .agc-mobile .agc-m-group{padding:14px 0 6px;font-family:Montserrat,sans-serif;font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#8A6A2C}
+.agc-nav .agc-mobile a.agc-m-sub{padding-left:16px}
