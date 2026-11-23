@@ -1,0 +1,143 @@
+<!-- =====================================================================
+     AGC Tutorials — tutors page for GoHighLevel.
+     Paste everything into ONE GHL Custom JS/HTML element.
+     Generated from tutors.html by tools/build-ghl.js — edit tutors.html, not this file.
+     ===================================================================== -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://agc-phi.vercel.app/css/shared.css">
+<link rel="stylesheet" href="https://agc-phi.vercel.app/css/tutors.css">
+<link rel="stylesheet" href="https://agc-phi.vercel.app/css/footer.css">
+
+<div class="agc-site">
+<!-- ===== Header ===== -->
+<header class="agc agc-nav">
+  <div class="agc-wrap agc-bar">
+    <a class="agc-logo" href="/"><img data-agc-img="logo" alt="AGC Tutorials — Aspire. Grow. Conquer." width="180" height="58"></a>
+    <div class="acts">
+      <a class="back" href="/" aria-label="Back to home"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span class="txt">Back to home</span></a>
+      <a class="agc-btn agc-btn-navy" href="https://agctutorials.com/agc-lms" target="_blank" rel="noopener">LOG IN</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===== Title ===== -->
+<section class="agc agc-page-hero">
+  <div class="agc-wrap">
+    <p class="eyebrow">For Tutors</p>
+    <h1>Create your tutor profile</h1>
+    <p>Tell families who you are, what you teach, and when you’re available. Your card updates as you type. When you submit, our team reviews it and matches you with students.</p>
+  </div>
+</section>
+
+<!-- ===== Profile form ===== -->
+<main class="agc agc-tutor">
+  <div class="agc-wrap grid">
+    <div>
+      <form id="agcTutor" novalidate>
+        <fieldset>
+          <legend>About you</legend>
+          <div class="photo">
+            <div class="avatar" id="tpAvatar" aria-hidden="true">?</div>
+            <div>
+              <input type="file" id="tpPhoto" accept="image/*">
+              <label class="up" for="tpPhoto"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3v13H4z"/><circle cx="12" cy="13" r="4"/></svg>Upload profile photo</label>
+              <button type="button" class="rm" id="tpPhotoRm" hidden>Remove</button>
+              <p class="hint" style="margin-top:8px">A clear, friendly headshot. Please attach it to the email when you submit.</p>
+            </div>
+          </div>
+          <div class="f2">
+            <label class="f"><span>Full name <em>*</em></span><input type="text" name="name" autocomplete="name" maxlength="80" required></label>
+            <label class="f"><span>City / area <em>*</em></span><input type="text" name="city" placeholder="e.g. Fairfax, VA" maxlength="60" required></label>
+          </div>
+          <div class="f2">
+            <label class="f"><span>Email <em>*</em></span><input type="email" name="email" autocomplete="email" required></label>
+            <label class="f"><span>Phone <em>*</em></span><input type="tel" name="phone" autocomplete="tel" required></label>
+          </div>
+          <label class="f"><span>Headline <em>*</em> <small>— one line families will see under your name</small></span><input type="text" name="headline" placeholder="e.g. Certified Math Teacher · Algebra &amp; SOL Prep" maxlength="80" required></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Experience</legend>
+          <div class="f2">
+            <label class="f"><span>Years of teaching / tutoring <em>*</em></span><select name="years" required><option value="">Select</option><option>Less than 1 year</option><option>1–2 years</option><option>3–5 years</option><option>6–10 years</option><option>10+ years</option></select></label>
+            <label class="f"><span>Highest education <em>*</em></span><select name="degree" required><option value="">Select</option><option>Some college</option><option>Associate degree</option><option>Bachelor’s degree</option><option>Master’s degree</option><option>Doctorate</option></select></label>
+          </div>
+          <label class="f"><span>Certifications &amp; licenses</span><textarea name="certs" placeholder="e.g. Virginia teaching license (Math 6–12), RBT, special education endorsement" maxlength="400" style="min-height:90px"></textarea></label>
+          <label class="f"><span>About me <em>*</em> <small>— your background and how you help students</small></span><textarea name="bio" maxlength="800" required placeholder="Share your experience, your teaching style, and what students can expect in a session with you."></textarea><span class="count" id="tpCount">0 / 800</span></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>What you teach</legend>
+          <div class="group" data-group="subjects"><p class="group-label">Subjects <em>*</em></p><div class="chips" id="tpSubjects"></div></div>
+          <div class="group" data-group="grades"><p class="group-label">Grade levels <em>*</em></p><div class="chips" id="tpGrades"></div></div>
+          <div class="group" data-group="programs"><p class="group-label">AGC programs you can lead <em>*</em></p><div class="chips" id="tpPrograms"></div></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Availability</legend>
+          <div class="group" data-group="formats"><p class="group-label">Session format <em>*</em></p><div class="chips" id="tpFormats"></div></div>
+          <div class="group" data-group="days"><p class="group-label">Days available <em>*</em></p><div class="chips" id="tpDays"></div></div>
+          <label class="f"><span>Preferred times</span><input type="text" name="times" placeholder="e.g. Weekdays 3–7 pm, Saturdays 9 am–1 pm" maxlength="120"></label>
+          <label class="f"><span>LinkedIn or résumé link</span><input type="url" name="link" placeholder="https://"></label>
+        </fieldset>
+
+        <label class="agree"><input type="checkbox" name="agree" required><span>I confirm this information is accurate, I agree to a background check before being matched with students, and I accept the <a href="/terms" target="_blank" rel="noopener">Terms of Use</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>
+        <p class="err" id="tpErr" role="alert" hidden>Please fill in the required fields.</p>
+        <div class="submit">
+          <button type="submit" class="agc-btn agc-btn-gold">Submit my profile</button>
+          <span class="saved" id="tpSaved" aria-live="polite"></span>
+          <button type="button" class="clear" id="tpClear">Clear form</button>
+        </div>
+      </form>
+
+      <div class="done" id="tpDone" hidden tabindex="-1">
+        <div class="ok"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8A6A2C" stroke-width="2.6" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div>
+        <h2 id="tpDoneTitle">Thank you!</h2>
+        <span class="no" id="tpDoneNo"></span>
+        <p>Your email app should have opened with your profile — <b>attach your photo and résumé</b>, then press <b>Send</b>. Our team will review it and reply within a few business days.</p>
+        <p>Email didn’t open? <a id="tpRetry" href="#">Try again</a> or write to <a class="mailto" href="#"></a> with your profile number.</p>
+        <button type="button" class="agc-btn agc-btn-navy" id="tpEdit">Edit my profile</button>
+      </div>
+    </div>
+
+    <aside aria-label="Profile preview">
+      <p class="pv-k">Live preview</p>
+      <div class="card">
+        <div class="top">
+          <div class="avatar" id="pvAvatar">?</div>
+          <div><h3 id="pvName">Your name</h3><p class="hl" id="pvHeadline">Your headline</p><p class="loc" id="pvCity"></p></div>
+        </div>
+        <p class="bio ph" id="pvBio">Your “About me” will appear here.</p>
+        <div class="tags" id="pvTags"></div>
+        <dl>
+          <dt>Experience</dt><dd id="pvYears" class="ph">—</dd>
+          <dt>Education</dt><dd id="pvDegree" class="ph">—</dd>
+          <dt>Grades</dt><dd id="pvGrades" class="ph">—</dd>
+          <dt>Format</dt><dd id="pvFormats" class="ph">—</dd>
+          <dt>Available</dt><dd id="pvDays" class="ph">—</dd>
+        </dl>
+      </div>
+      <p class="pv-note">This is how families will see you once your profile is approved.</p>
+    </aside>
+  </div>
+</main>
+
+<!-- ===== Footer ===== -->
+<footer class="agc agc-footer">
+  <div class="agc-wrap cols">
+    <div>
+      <div class="logo"><img data-agc-img="logo" alt="AGC Tutorials" width="150" height="48"></div>
+      <p class="about">Personalized, data-driven tutoring and executive functioning coaching for K–12 students — in person and online.</p>
+    </div>
+    <div><h4>Programs</h4><div class="links"><a href="/#programs">AGC Core Tutoring</a><a href="/#programs">AGC Anywhere</a><a href="/#programs">AGC Ascent Coaching</a><a href="/plans">Plans &amp; Pricing</a></div></div>
+    <div><h4>Company</h4><div class="links"><a href="/#about">About Us</a><a href="/#founder">Our Founder</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a><a href="/tutors">Tutor Profile</a></div></div>
+    <div><h4>Contact</h4><div class="links"><a class="mail" href="mailto:rconcepcion@agctutorials.com">rconcepcion@agctutorials.com</a><a href="tel:+17036354237">+1 (703) 635-4237</a><span>Commonwealth of Virginia, USA</span></div></div>
+  </div>
+  <div class="bottom"><div class="agc-wrap"><span>© 2026 AGC Tutorials LLC. All rights reserved.</span><span class="powered">Powered by: <a href="https://multiplytalents.io/" target="_blank" rel="noopener">Multiply Talents</a></span><b>Aspire. Grow. Conquer.</b></div></div>
+</footer>
+</div>
+
+<script src="https://agc-phi.vercel.app/js/tutors.js"></script>

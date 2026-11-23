@@ -1,0 +1,22 @@
+/* =====================================================================
+   AGC Tutorials — site footer, the same on every page.
+   Loaded after the page's own stylesheet so its 15px text size wins over .agc.
+   ===================================================================== */
+
+.agc-footer{background:#071A33;color:#C7CFDD;font-size:15px}
+.agc-footer .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:40px;padding-top:72px;padding-bottom:40px}
+.agc-footer .logo{background:#F7F3E8;border-radius:12px;padding:10px 14px;display:inline-block}
+.agc-footer .logo img{height:48px;width:auto}
+.agc-footer .about{margin-top:18px}
+.agc-footer h4{margin:0;font-family:Montserrat,sans-serif;font-weight:700;color:#fff;font-size:16px}
+.agc-footer .links{margin-top:16px;display:flex;flex-direction:column;gap:4px}
+.agc-footer .links a,.agc-footer .links span{color:#C7CFDD;padding:5px 0}
+.agc-footer .links a:hover{color:#C59B4E}
+.agc-footer .links a.mail{color:#C59B4E;font-weight:700;word-break:break-word}
+.agc-footer .bottom{border-top:1px solid rgba(209,194,165,.25)}
+.agc-footer .bottom .agc-wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;padding-top:20px;padding-bottom:20px;font-size:14px}
+.agc-footer .bottom b{color:#C59B4E}
+.agc-footer .bottom .powered a{color:#C59B4E;font-weight:700}
+.agc-footer .bottom .powered a:hover{text-decoration:underline}
+@media (max-width:900px){.agc-footer .cols{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.agc-footer .cols{grid-template-columns:1fr;gap:32px;padding-top:56px}.agc-footer .bottom .agc-wrap{flex-direction:column;text-align:center;align-items:center}}

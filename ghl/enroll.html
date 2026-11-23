@@ -1,0 +1,98 @@
+<!-- =====================================================================
+     AGC Tutorials — enroll page for GoHighLevel.
+     Paste everything into ONE GHL Custom JS/HTML element.
+     Generated from enroll.html by tools/build-ghl.js — edit enroll.html, not this file.
+     ===================================================================== -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://agc-phi.vercel.app/css/shared.css">
+<link rel="stylesheet" href="https://agc-phi.vercel.app/css/enroll.css">
+<link rel="stylesheet" href="https://agc-phi.vercel.app/css/footer.css">
+
+<div class="agc-site">
+<!-- ===== Header ===== -->
+<header class="agc agc-nav">
+  <div class="agc-wrap agc-bar">
+    <a class="agc-logo" href="/"><img data-agc-img="logo" alt="AGC Tutorials — Aspire. Grow. Conquer." width="180" height="58"></a>
+    <div class="acts">
+      <a class="back" href="/plans" aria-label="Back to plans"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span class="txt">Back to plans</span></a>
+      <a class="agc-btn agc-btn-navy" href="/#contact">Book a Consultation</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===== Title ===== -->
+<section class="agc agc-page-hero">
+  <div class="agc-wrap">
+    <p class="eyebrow">Enrollment</p>
+    <h1>Enroll your student</h1>
+    <p>Choose a package and program, tell us about your student, and we’ll confirm your schedule within one business day.</p>
+  </div>
+</section>
+
+<!-- ===== Enrollment form ===== -->
+<main class="agc agc-enroll-page">
+  <div class="agc-wrap">
+    <div class="layout">
+      <form id="agcEnroll" novalidate>
+        <fieldset class="step">
+          <legend><span class="num">1</span>Choose a package</legend>
+          <div class="opts pkgs"></div>
+        </fieldset>
+        <fieldset class="step">
+          <legend><span class="num">2</span>Choose a program</legend>
+          <div class="opts three progs"></div>
+          <label class="f subj" hidden><span>Subject <em>*</em></span><select name="subject" required disabled><option value="">Choose a subject</option></select></label>
+        </fieldset>
+        <fieldset class="step">
+          <legend><span class="num">3</span>Parent / guardian</legend>
+          <div class="fields">
+            <label class="f"><span>Full name <em>*</em></span><input type="text" name="parent" autocomplete="name" required></label>
+            <div class="f2">
+              <label class="f"><span>Email <em>*</em></span><input type="email" name="email" autocomplete="email" required></label>
+              <label class="f"><span>Phone <em>*</em></span><input type="tel" name="phone" autocomplete="tel" required></label>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset class="step">
+          <legend><span class="num">4</span>Student</legend>
+          <div class="fields">
+            <div class="f2">
+              <label class="f"><span>Student name <em>*</em></span><input type="text" name="student" required></label>
+              <label class="f"><span>Grade <em>*</em></span><select name="grade" required><option value="">Select</option></select></label>
+            </div>
+            <label class="f"><span>Goals or anything we should know</span><textarea name="notes" placeholder="e.g. Algebra II, staying organized, SOL prep"></textarea></label>
+          </div>
+        </fieldset>
+        <label class="agree"><input type="checkbox" name="agree" required><span>I agree to the <a href="/terms" target="_blank" rel="noopener">Terms of Use</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>
+        <p class="err" role="alert" hidden>Please fill in the required fields.</p>
+        <button type="submit" class="agc-btn agc-btn-gold submit">Submit &amp; continue to payment</button>
+      </form>
+
+      <aside class="aside" aria-live="polite">
+        <h2>Enrollment summary</h2>
+        <div class="sum"></div>
+        <p class="fine">After you submit, you’ll pay for your package on our secure checkout page. Card details are never entered on this form.</p>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<!-- ===== Footer ===== -->
+<footer class="agc agc-footer">
+  <div class="agc-wrap cols">
+    <div>
+      <div class="logo"><img data-agc-img="logo" alt="AGC Tutorials" width="150" height="48"></div>
+      <p class="about">Personalized, data-driven tutoring and executive functioning coaching for K–12 students — in person and online.</p>
+    </div>
+    <div><h4>Programs</h4><div class="links"><a href="/#programs">AGC Core Tutoring</a><a href="/#programs">AGC Anywhere</a><a href="/#programs">AGC Ascent Coaching</a><a href="/plans">Plans &amp; Pricing</a></div></div>
+    <div><h4>Company</h4><div class="links"><a href="/#about">About Us</a><a href="/#founder">Our Founder</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a><a href="/tutors">Tutor Profile</a></div></div>
+    <div><h4>Contact</h4><div class="links"><a class="mail" href="mailto:rconcepcion@agctutorials.com">rconcepcion@agctutorials.com</a><a href="tel:+17036354237">+1 (703) 635-4237</a><span>Commonwealth of Virginia, USA</span></div></div>
+  </div>
+  <div class="bottom"><div class="agc-wrap"><span>© 2026 AGC Tutorials LLC. All rights reserved.</span><span class="powered">Powered by: <a href="https://multiplytalents.io/" target="_blank" rel="noopener">Multiply Talents</a></span><b>Aspire. Grow. Conquer.</b></div></div>
+</footer>
+</div>
+
+<script src="https://agc-phi.vercel.app/js/enroll.js"></script>

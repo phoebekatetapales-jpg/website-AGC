@@ -1,0 +1,147 @@
+/* =====================================================================
+   AGC Tutorials — Enroll page styles (enroll.html).
+   Base styles: css/shared.css · Footer: css/footer.css
+   ===================================================================== */
+
+body{margin:0;background:#fff}
+.agc-site{overflow-x:clip}
+
+.agc{font-family:'Nunito Sans',system-ui,-apple-system,'Segoe UI',sans-serif;color:#33415C;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;text-align:left}
+.agc h1,.agc h2,.agc h3{font-family:Montserrat,system-ui,sans-serif;color:#0B2545;margin:0;line-height:1.15;letter-spacing:normal;text-transform:none}
+.agc a:focus-visible{outline:3px solid #C59B4E;outline-offset:3px}
+.agc .agc-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 28px;border-radius:999px;font-family:Montserrat,sans-serif;font-weight:700;font-size:15px;border:2px solid transparent;cursor:pointer;transition:filter .15s}
+.agc .agc-btn-gold{background:#C59B4E;color:#0B2545}
+.agc .agc-btn-outline-light{background:transparent;color:#fff;border-color:#fff}
+@media (max-width:768px){.agc .agc-wrap{padding:0 20px}}
+
+/* ---- Header (sticky) ---- */
+.agc-nav{position:sticky;top:0;z-index:1000;background:#fff;border-bottom:1px solid #E6DCC8;transition:box-shadow .25s}
+.agc-nav.agc-stuck{box-shadow:0 8px 24px rgba(11,37,69,.10)}
+.agc-nav .agc-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:12px;padding-bottom:12px}
+.agc-nav .back{display:inline-flex;align-items:center;gap:8px;font-family:Montserrat,sans-serif;font-weight:600;font-size:15px;color:#0B2545}
+.agc-nav .back:hover{color:#8A6A2C}
+.agc-nav .acts{display:flex;align-items:center;gap:20px}
+.agc-nav .acts .agc-btn{min-height:44px;padding:0 22px;font-size:14px}
+@media (max-width:640px){.agc-nav .agc-logo img{height:44px}.agc-nav .back{display:none}.agc-nav .acts .agc-btn{padding:0 16px;font-size:13px;white-space:nowrap}}
+
+/* ---- Page title ---- */
+.agc-page-hero{background-color:#F9F7F2;background-image:linear-gradient(rgba(209,194,165,.35) 1px,transparent 1px),linear-gradient(90deg,rgba(209,194,165,.35) 1px,transparent 1px);background-size:64px 64px;border-bottom:1px solid #E6DCC8;text-align:center}
+.agc-page-hero .agc-wrap{padding-top:80px;padding-bottom:72px;max-width:820px}
+.agc-page-hero .eyebrow{font-weight:700;font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:#8A6A2C}
+.agc-page-hero h1{margin-top:12px;font-weight:800;font-size:clamp(32px,5vw,52px);letter-spacing:-.02em}
+.agc-page-hero p{margin-top:18px;font-size:18px;color:#3D4B66}
+@media (max-width:640px){.agc-page-hero .agc-wrap{padding-top:52px;padding-bottom:48px}.agc-page-hero p{font-size:16px}}
+
+/* ---- Plans ---- */
+.agc-pricing{padding:80px 0 24px}
+.agc-pricing .plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px}
+.agc-pricing .plan{background:#fff;border:1px solid #E6DCC8;border-radius:22px;padding:32px;display:flex;flex-direction:column;gap:14px;transition:transform .2s,box-shadow .2s}
+.agc-pricing .plan:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(11,37,69,.12)}
+.agc-pricing .head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.agc-pricing .k{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8A6A2C}
+.agc-pricing h3{margin-top:6px;font-weight:700;font-size:22px}
+.agc-pricing .badge{flex:none;background:#C59B4E;color:#0B2545;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border-radius:999px}
+.agc-pricing .price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.agc-pricing .price b{font-family:Montserrat,sans-serif;font-weight:800;font-size:44px;line-height:1;color:#0B2545}
+.agc-pricing .price span{font-weight:600;color:#4A5672}
+.agc-pricing .meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-weight:700;font-size:15px;color:#0B2545}
+.agc-pricing .save{background:#F4ECDC;color:#7A5C22;padding:4px 10px;border-radius:999px;font-size:13px}
+.agc-pricing .desc{font-size:15px;flex-grow:1}
+.agc-pricing .plan.dark{background:#0B2545;border:2px solid #C59B4E;color:#DDE3EE}
+.agc-pricing .plan.dark .k,.agc-pricing .plan.dark .price b{color:#C59B4E}
+.agc-pricing .plan.dark h3,.agc-pricing .plan.dark .meta{color:#fff}
+.agc-pricing .plan.dark .price span{color:#DDE3EE}
+.agc-pricing .plan.dark .save{background:rgba(197,155,78,.2);color:#E9CF9C}
+@media (max-width:1100px){.agc-pricing .plans{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:680px){.agc-pricing{padding-top:48px}.agc-pricing .plans{grid-template-columns:1fr;gap:18px}.agc-pricing .plan{padding:26px 22px}.agc-pricing .price b{font-size:38px}}
+
+/* ---- Call to action ---- */
+.agc-cta{background:#fff;padding:72px 0 96px}
+.agc-cta .band{background-color:#0B2545;background-image:linear-gradient(rgba(197,155,78,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(197,155,78,.14) 1px,transparent 1px);background-size:64px 64px;border-radius:28px;padding:64px 48px;display:flex;flex-wrap:wrap;gap:32px;align-items:center;justify-content:space-between}
+.agc-cta .txt{max-width:640px}
+.agc-cta h2{color:#fff;font-weight:800;font-size:clamp(26px,3.2vw,38px);line-height:1.2}
+.agc-cta p{margin-top:14px;font-size:17px;color:#DDE3EE}
+.agc-cta .btns{display:flex;flex-wrap:wrap;gap:14px}
+@media (max-width:768px){.agc-cta{padding:48px 0 72px}.agc-cta .band{padding:40px 24px;border-radius:22px}.agc-cta .btns{width:100%;flex-direction:column}.agc-cta .agc-btn{width:100%}}
+
+/* ---- Animations ---- */
+@keyframes agcUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes agcPulse{0%{box-shadow:0 0 0 0 rgba(197,155,78,.55)}70%{box-shadow:0 0 0 14px rgba(197,155,78,0)}100%{box-shadow:0 0 0 0 rgba(197,155,78,0)}}
+.agc-page-hero .eyebrow{animation:agcUp .6s .05s both}
+.agc-page-hero h1{animation:agcUp .7s .15s both}
+.agc-page-hero p{animation:agcUp .7s .3s both}
+.agc-pricing .plan{animation:agcUp .7s both}
+.agc-pricing .plan:nth-child(1){animation-delay:.35s}.agc-pricing .plan:nth-child(2){animation-delay:.43s}.agc-pricing .plan:nth-child(3){animation-delay:.51s}
+.agc-pricing .plan:nth-child(4){animation-delay:.59s}.agc-pricing .plan:nth-child(5){animation-delay:.67s}
+.agc-pricing .plan.dark{animation:agcUp .7s .75s both,agcPulse 3s 1.6s infinite}
+@media (prefers-reduced-motion:reduce){.agc-site *{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+/* ---- Enrollment ---- */
+.agc-enroll-page{padding:64px 0 96px;background:#fff}
+.agc-enroll-page .layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:32px;align-items:start}
+.agc-enroll-page form{display:flex;flex-direction:column;gap:24px}
+.agc-enroll-page .step{border:1px solid #E6DCC8;border-radius:22px;padding:28px;margin:0;min-width:0}
+.agc-enroll-page .step legend{float:left;width:100%;padding:0;margin:0 0 18px;display:flex;align-items:center;gap:12px;font-family:Montserrat,sans-serif;font-weight:800;font-size:20px;color:#0B2545}
+.agc-enroll-page .step legend+*{clear:both}
+.agc-enroll-page .step .num{flex:none;width:34px;height:34px;border-radius:50%;background:#0B2545;color:#C59B4E;display:grid;place-items:center;font-size:15px}
+.agc-enroll-page .hint{font-size:14px;color:#5A6680;margin:-8px 0 16px}
+.agc-enroll-page .opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.agc-enroll-page .opts.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.agc-enroll-page .opt{position:relative;min-width:0}
+.agc-enroll-page .opt input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.agc-enroll-page .opt label{height:100%;display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border:1px solid #E6DCC8;border-radius:16px;cursor:pointer;transition:border-color .2s,background .2s}
+.agc-enroll-page .opt label:hover{border-color:#C59B4E}
+.agc-enroll-page .opt .dot{flex:none;margin-top:3px;width:18px;height:18px;border-radius:50%;border:2px solid #B9A887;display:grid;place-items:center}
+.agc-enroll-page .opt .dot::after{content:"";width:8px;height:8px;border-radius:50%;background:#C59B4E;transform:scale(0);transition:transform .2s}
+.agc-enroll-page .opt .t{display:flex;flex-direction:column;gap:2px;line-height:1.35;min-width:0;flex:1}
+.agc-enroll-page .opt .t small{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8A6A2C}
+.agc-enroll-page .opt .t b{font-family:Montserrat,sans-serif;font-size:15px;color:#0B2545}
+.agc-enroll-page .opt .t span{font-size:14px;color:#5A6680}
+.agc-enroll-page .opt .p{font-family:Montserrat,sans-serif;font-weight:800;color:#0B2545;white-space:nowrap}
+.agc-enroll-page .opt input:checked+label{border-color:#C59B4E;background:#FBF6EC;box-shadow:inset 0 0 0 1px #C59B4E}
+.agc-enroll-page .opt input:checked+label .dot{border-color:#C59B4E}
+.agc-enroll-page .opt input:checked+label .dot::after{transform:scale(1)}
+.agc-enroll-page .opt input:focus-visible+label{outline:3px solid #C59B4E;outline-offset:2px}
+.agc-enroll-page .f{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:700;color:#0B2545}
+.agc-enroll-page .f em{font-style:normal;color:#B4442C}
+.agc-enroll-page .f[hidden]{display:none}
+.agc-enroll-page .subj{margin-top:16px}
+.agc-enroll-page .fields{display:flex;flex-direction:column;gap:14px}
+.agc-enroll-page .f2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.agc-enroll-page input[type=text],.agc-enroll-page input[type=email],.agc-enroll-page input[type=tel],.agc-enroll-page select,.agc-enroll-page textarea{width:100%;min-height:46px;padding:10px 14px;border:1px solid #D1C2A5;border-radius:12px;font:inherit;font-weight:400;color:#0B2545;background:#fff}
+.agc-enroll-page textarea{min-height:96px;resize:vertical}
+.agc-enroll-page input:focus-visible,.agc-enroll-page select:focus-visible,.agc-enroll-page textarea:focus-visible,.agc-enroll-page button:focus-visible{outline:3px solid #C59B4E;outline-offset:2px}
+.agc-enroll-page .agree{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#33415C}
+.agc-enroll-page .agree input{margin-top:4px;width:18px;height:18px;accent-color:#C59B4E;flex:none}
+.agc-enroll-page .agree a,.agc-enroll-page .done a{color:#8A6A2C;font-weight:700;text-decoration:underline}
+.agc-enroll-page .err{font-size:14px;font-weight:700;color:#B4442C}
+.agc-enroll-page .err[hidden]{display:none}
+.agc-enroll-page .bad label,.agc-enroll-page .bad{border-color:#B4442C}
+.agc-enroll-page .submit{width:100%}
+.agc-enroll-page .aside{position:sticky;top:110px;background:#0B2545;color:#DDE3EE;border-radius:22px;padding:28px;border:2px solid #C59B4E}
+.agc-enroll-page .aside h2{color:#fff;font-size:18px;font-weight:800}
+.agc-enroll-page .aside .k{margin-top:18px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#C59B4E}
+.agc-enroll-page .aside .nm{margin-top:4px;font-family:Montserrat,sans-serif;font-weight:700;font-size:20px;color:#fff;line-height:1.25}
+.agc-enroll-page .aside .none{margin-top:14px;color:#C7CFDD}
+.agc-enroll-page .aside dl{margin:18px 0 0;display:flex;flex-direction:column;gap:8px;font-size:15px}
+.agc-enroll-page .aside dl div{display:flex;justify-content:space-between;gap:12px}
+.agc-enroll-page .aside dt{color:#C7CFDD}
+.agc-enroll-page .aside dd{margin:0;color:#fff;font-weight:700;text-align:right}
+.agc-enroll-page .aside .save{display:inline-block;margin-top:14px;background:rgba(197,155,78,.2);color:#E9CF9C;font-size:13px;font-weight:700;padding:4px 10px;border-radius:999px}
+.agc-enroll-page .aside .tot{margin-top:20px;padding-top:18px;border-top:1px solid rgba(197,155,78,.35);display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-weight:700;color:#fff}
+.agc-enroll-page .aside .tot b{font-family:Montserrat,sans-serif;font-size:30px;font-weight:800;color:#C59B4E}
+.agc-enroll-page .aside .fine{margin-top:16px;font-size:13px;color:#C7CFDD}
+.agc-enroll-page .done{max-width:640px;margin:0 auto;text-align:center;border:1px solid #E6DCC8;border-radius:22px;padding:48px 28px}
+.agc-enroll-page .done .ok{width:64px;height:64px;border-radius:50%;background:#F4ECDC;display:grid;place-items:center;margin:0 auto 16px}
+.agc-enroll-page .done h2{font-size:26px;font-weight:800}
+.agc-enroll-page .done .no{display:inline-block;margin-top:14px;background:#0B2545;color:#C59B4E;font-family:Montserrat,sans-serif;font-weight:800;letter-spacing:.06em;padding:8px 16px;border-radius:999px}
+.agc-enroll-page .done p{margin-top:14px}
+.agc-enroll-page .done .agc-btn{margin-top:24px;min-width:240px}
+.agc-enroll-page .done .next{margin:22px 0 0;padding:0;list-style:none;counter-reset:n;text-align:left;display:flex;flex-direction:column;gap:12px}
+.agc-enroll-page .done .next li{counter-increment:n;position:relative;padding:14px 16px 14px 56px;background:#F9F7F2;border:1px solid #E6DCC8;border-radius:14px}
+.agc-enroll-page .done .next li::before{content:counter(n);position:absolute;left:16px;top:14px;width:28px;height:28px;border-radius:50%;background:#0B2545;color:#C59B4E;display:grid;place-items:center;font-family:Montserrat,sans-serif;font-weight:800;font-size:14px}
+.agc-enroll-page .done .next b{color:#0B2545}
+.agc-enroll-page .done .fine{font-size:14px;color:#5A6680}
+.agc-enroll-page .done .home{display:inline-block;margin-top:16px;font-family:Montserrat,sans-serif;font-weight:700;color:#0B2545;text-decoration:none}
+.agc-enroll-page .done .home:hover{color:#8A6A2C}
+@media (max-width:1000px){.agc-enroll-page .layout{grid-template-columns:1fr}.agc-enroll-page .aside{position:static;order:-1}}
+@media (max-width:640px){.agc-enroll-page{padding:40px 0 72px}.agc-enroll-page .step{padding:22px 18px}.agc-enroll-page .opts,.agc-enroll-page .opts.three,.agc-enroll-page .f2{grid-template-columns:1fr}}
