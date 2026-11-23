@@ -166,7 +166,14 @@ html{scroll-behavior:smooth}
 .agc-enroll-page .done h2{font-size:26px;font-weight:800}
 .agc-enroll-page .done .no{display:inline-block;margin-top:14px;background:#0B2545;color:#C59B4E;font-family:Montserrat,sans-serif;font-weight:800;letter-spacing:.06em;padding:8px 16px;border-radius:999px}
 .agc-enroll-page .done p{margin-top:14px}
-.agc-enroll-page .done .agc-btn{margin-top:24px}
+.agc-enroll-page .done .agc-btn{margin-top:24px;min-width:240px}
+.agc-enroll-page .done .next{margin:22px 0 0;padding:0;list-style:none;counter-reset:n;text-align:left;display:flex;flex-direction:column;gap:12px}
+.agc-enroll-page .done .next li{counter-increment:n;position:relative;padding:14px 16px 14px 56px;background:#F9F7F2;border:1px solid #E6DCC8;border-radius:14px}
+.agc-enroll-page .done .next li::before{content:counter(n);position:absolute;left:16px;top:14px;width:28px;height:28px;border-radius:50%;background:#0B2545;color:#C59B4E;display:grid;place-items:center;font-family:Montserrat,sans-serif;font-weight:800;font-size:14px}
+.agc-enroll-page .done .next b{color:#0B2545}
+.agc-enroll-page .done .fine{font-size:14px;color:#5A6680}
+.agc-enroll-page .done .home{display:inline-block;margin-top:16px;font-family:Montserrat,sans-serif;font-weight:700;color:#0B2545;text-decoration:none}
+.agc-enroll-page .done .home:hover{color:#8A6A2C}
 @media (max-width:1000px){.agc-enroll-page .layout{grid-template-columns:1fr}.agc-enroll-page .aside{position:static;order:-1}}
 @media (max-width:640px){.agc-enroll-page{padding:40px 0 72px}.agc-enroll-page .step{padding:22px 18px}.agc-enroll-page .opts,.agc-enroll-page .opts.three,.agc-enroll-page .f2{grid-template-columns:1fr}}
 </style>
@@ -228,13 +235,13 @@ html{scroll-behavior:smooth}
         </fieldset>
         <label class="agree"><input type="checkbox" name="agree" required><span>I agree to the <a href="/terms" target="_blank" rel="noopener">Terms of Use</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>
         <p class="err" role="alert" hidden>Please fill in the required fields.</p>
-        <button type="submit" class="agc-btn agc-btn-gold submit">Submit enrollment</button>
+        <button type="submit" class="agc-btn agc-btn-gold submit">Submit &amp; continue to payment</button>
       </form>
 
       <aside class="aside" aria-live="polite">
         <h2>Enrollment summary</h2>
         <div class="sum"></div>
-        <p class="fine">No payment is taken online. After you enroll, our team confirms your schedule and sends a secure payment link.</p>
+        <p class="fine">After you submit, you’ll pay for your package on our secure checkout page. Card details are never entered on this form.</p>
       </aside>
     </div>
   </div>
@@ -266,10 +273,22 @@ window.addEventListener('scroll',stuck,{passive:true});stuck();
 
 /* ---- Enrollment ----
    Open /enroll?plan=sprint&program=anywhere to preselect a package and program.
-   Submitting opens an email to EMAIL with the enrollment details — no card is charged on the site.
+   Submitting opens an email to EMAIL with the enrollment details, then shows a "Pay now" button
+   that opens the package's GoHighLevel payment link (PAY_LINKS) in a new tab. No card details touch this site.
    To change a package or price, edit PLANS below (and the matching card on /plans and the homepage). */
 (function(){
 var EMAIL='rconcepcion@agctutorials.com';
+/* GHL payment link for each package (Payments → Payment Links → Copy link).
+   TEMPORARY: every package uses the same test link until the real per-package links are created. */
+var TEST_LINK='https://api.multiplytalents.io/payment-link/6afff13a21a48a3872d27c9a';
+var PAY_LINKS={
+ flex:TEST_LINK,
+ sprint:TEST_LINK,
+ momentum:TEST_LINK,
+ ascent:TEST_LINK,
+ semester:TEST_LINK,
+ apex:TEST_LINK
+};
 var PLANS=[
  {id:'flex',kicker:'Pay-as-you-go',name:'Flex Aspire Pass',amount:100,unit:'per session',rate:'$100 / session',save:''},
  {id:'sprint',kicker:'8 sessions',name:'Sprint Growth Pack',amount:720,unit:'package',rate:'$90 / session',save:'Save $80'},
@@ -335,11 +354,17 @@ form.addEventListener('submit',function(e){
     'Parent / guardian: '+d.parent,'Email: '+d.email,'Phone: '+d.phone,
     'Student: '+d.student+' ('+d.grade+')'].concat(d.notes?['Goals / notes: '+d.notes]:[]);
   var mail='mailto:'+EMAIL+'?subject='+encodeURIComponent('Enrollment '+no+' — '+d.student)+'&body='+encodeURIComponent(lines.join('\n'));
+  var pay=PAY_LINKS[plan.id];
   root.querySelector('.agc-wrap').innerHTML='<div class="done" tabindex="-1"><div class="ok"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#8A6A2C" stroke-width="2.6" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div>'+
     '<h2>Thank you, '+esc(d.parent.split(' ')[0])+'!</h2><span class="no">'+esc(no)+'</span>'+
-    '<p>Your email app should have opened with the enrollment details — press <b>Send</b> to submit it. We’ll reply within one business day to confirm your schedule and send a secure payment link.</p>'+
-    '<p>Email didn’t open? <a href="'+esc(mail)+'">Try again</a> or write to <a href="mailto:'+EMAIL+'">'+EMAIL+'</a> with your enrollment number.</p>'+
-    '<a class="agc-btn agc-btn-navy" href="/">Back to home</a></div>';
+    '<ol class="next">'+
+    '<li><b>Send your enrollment details.</b> Your email app should have opened with them — press <b>Send</b>. Didn’t open? <a href="'+esc(mail)+'">Try again</a>.</li>'+
+    (pay?'<li><b>Pay for your package.</b> '+esc(plan.name)+' — '+money(plan.amount)+'. Payment opens on our secure checkout page in a new tab.</li>'
+        :'<li><b>Payment.</b> We’ll email you a secure payment link with your schedule confirmation.</li>')+
+    '</ol>'+
+    (pay?'<a class="agc-btn agc-btn-gold pay" href="'+esc(pay)+'" target="_blank" rel="noopener">Pay '+money(plan.amount)+' now</a>':'')+
+    '<p class="fine">We’ll reply within one business day to confirm your schedule. Questions? Write to <a href="mailto:'+EMAIL+'">'+EMAIL+'</a> with your enrollment number.</p>'+
+    '<a class="home" href="/">Back to home</a></div>';
   var done=root.querySelector('.done');done.focus();window.scrollTo({top:root.offsetTop-80,behavior:'smooth'});
   location.href=mail;
 });
