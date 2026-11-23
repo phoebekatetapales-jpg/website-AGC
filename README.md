@@ -26,8 +26,24 @@ images/           Logo, hero photos and founder photo
 ghl/              Paste-ready blocks for GoHighLevel (generated, don't edit)
 tools/
   build-ghl.js    Rebuilds ghl/ from the pages
+  preview.js      Local preview server
+Preview website.cmd   Double-click to start the local preview (Windows)
 vercel.json       Clean URLs (/plans instead of /plans.html)
 ```
+
+## Preview on your computer
+
+Double-click **`Preview website.cmd`**, or run:
+
+```
+node tools/preview.js
+```
+
+It opens http://localhost:8080 in your browser. Edit a file, then refresh to see the change.
+Close the window (or press Ctrl+C) to stop. Needs [Node.js](https://nodejs.org).
+
+Opening the `.html` files directly by double-clicking won't show the styles, because the pages
+load them from `/css/...` at the root of a web server.
 
 Each page loads its files in this order:
 
