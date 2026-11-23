@@ -22,7 +22,8 @@ for (const [file, name] of Object.entries(PAGES)) {
   const html = fs.readFileSync(path.join(ROOT, file), 'utf8').replace(/\r\n/g, '\n');
   const head = html.match(/<head>([\s\S]*?)<\/head>/)[1];
   const body = html.match(/<body>\n?([\s\S]*?)<\/body>/)[1];
-  const links = head.split('\n').filter(l => /^<link /.test(l)).join('\n');
+  // Fonts and stylesheets only: GHL sets the page's favicon in its own settings.
+  const links = head.split('\n').filter(l => /^<link /.test(l) && !/rel="(icon|apple-touch-icon)"/.test(l)).join('\n');
   const block = `<!-- =====================================================================
      AGC Tutorials — ${name} page for GoHighLevel.
      Paste everything into ONE GHL Custom JS/HTML element.
