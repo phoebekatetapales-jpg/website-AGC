@@ -30,8 +30,8 @@ var PAY_LINKS={
  apex:'https://api.multiplytalents.io/payment-link/6b08f071906a8b62055da216'      // Apex Scholar Elite    $5,040
 };
 /* GHL inbound webhook (Automation → Workflows → trigger "Inbound Webhook" → copy its URL).
-   When set, every enrollment is sent straight to GHL and families don't need to email it.
-   Leave empty ('') to go back to the email-only flow. */
+   When set, every enrollment is sent straight to GHL and no email is involved.
+   While empty (''), the form falls back to opening an email so enrollments aren't lost. */
 var GHL_WEBHOOK='';
 var PLANS=[
  {id:'flex',kicker:'Pay-as-you-go',name:'Flex Aspire Pass',amount:100,unit:'per session',rate:'$100 / session',save:''},
@@ -103,7 +103,7 @@ form.addEventListener('submit',function(e){
     '<h2>Thank you, '+esc(d.parent.split(' ')[0])+'!</h2><span class="no">'+esc(no)+'</span>'+
     '<ol class="next">'+
     (GHL_WEBHOOK
-      ?'<li><b>We’ve received your details.</b> No need to email us — want a copy for your records? <a href="'+esc(mail)+'">Email it to us</a>.</li>'
+      ?'<li><b>We’ve received your enrollment.</b> Our team has your details — nothing else to send.</li>'
       :'<li><b>Send your enrollment details.</b> Your email app should have opened with them — press <b>Send</b>. Didn’t open? <a href="'+esc(mail)+'">Try again</a>.</li>')+
     (pay?'<li><b>Pay for your package.</b> '+esc(plan.name)+' — '+money(plan.amount)+'. Payment opens on our secure checkout page in a new tab.</li>'
         :'<li><b>Payment.</b> We’ll email you a secure payment link with your schedule confirmation.</li>')+
