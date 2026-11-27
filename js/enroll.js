@@ -29,6 +29,10 @@ var PAY_LINKS={
  semester:'https://api.multiplytalents.io/payment-link/6b08f0a021a48a3872d29b4e', // Semester Conquer Pass $3,600
  apex:'https://api.multiplytalents.io/payment-link/6b08f071906a8b62055da216'      // Apex Scholar Elite    $5,040
 };
+/* GHL inbound webhook (Automation → Workflows → trigger "Inbound Webhook" → copy its URL).
+   When set, every enrollment is sent straight to GHL and no email is involved.
+   While empty (''), the form falls back to opening an email so enrollments aren't lost. */
+var GHL_WEBHOOK='https://services.leadconnectorhq.com/hooks/cFgAFxrOkoU4TMUh4bJp/webhook-trigger/e5840689-4b1b-4f23-856b-136e916e9efc';
 var PLANS=[
  {id:'flex',kicker:'Pay-as-you-go',name:'Flex Aspire Pass',amount:100,unit:'per session',rate:'$100 / session',save:''},
  {id:'sprint',kicker:'8 sessions',name:'Sprint Growth Pack',amount:720,unit:'package',rate:'$90 / session',save:'Save $80'},
@@ -81,31 +85,113 @@ form.addEventListener('change',sync);
 form.addEventListener('input',function(){err.hidden=true;});
 sync();
 
+/* ---- Enroll, then pay ----
+   1. "Continue to payment" sends the enrollment to GHL marked "Awaiting payment", waits for GHL to
+      receive it (up to 4 seconds), then opens the package's GHL checkout in the same tab.
+      Confirm who paid in GHL → Payments → Transactions.
+   2. The details are also kept in this browser for 2 days: if the family comes back without paying,
+      the form is pre-filled; if a GHL payment link redirects to /enroll?paid=1, they see a thank-you page
+      (nothing is sent again).
+   With GHL_WEBHOOK empty, the enrollment email opens first instead, then the checkout. */
+var STORE='agcEnrollPending',KEEP_MS=2*24*3600*1000;
+var FIELDS=['parent','email','phone','student','grade','notes','subject'];
+function loadPending(){try{var p=JSON.parse(localStorage.getItem(STORE));return p&&p.data&&Date.now()-p.at<KEEP_MS?p:null;}catch(e){return null;}}
+function savePending(p){try{localStorage.setItem(STORE,JSON.stringify(p));return !!localStorage.getItem(STORE);}catch(e){return false;}}
+function clearPending(){try{localStorage.removeItem(STORE);}catch(e){}}
+
+function buildEnrollment(){
+  var d={};FIELDS.forEach(function(n){d[n]=form.elements[n].disabled?'':form.elements[n].value.trim();});
+  var names=d.parent.split(/\s+/),no='AGC-'+Date.now().toString(36).toUpperCase().slice(-6);
+  return {fields:d,plan:plan.id,program:program.id,data:{
+    first_name:names[0],last_name:names.slice(1).join(' '),full_name:d.parent,email:d.email,phone:d.phone,
+    student_name:d.student,student_grade:d.grade,
+    package:plan.name,package_sessions:plan.kicker,package_price:plan.amount,
+    program:program.name,subject:d.subject,notes:d.notes,
+    enrollment_number:no,payment_link:PAY_LINKS[plan.id]||'',payment_status:'',
+    source:'Website enrollment form',submitted_at:new Date().toISOString()
+  }};
+}
+function mailFor(x){
+  var lines=['New enrollment '+x.enrollment_number+(x.payment_status?' — '+x.payment_status:''),'',
+    'Package: '+x.package+' ('+x.package_sessions+') — '+money(x.package_price),
+    'Program: '+x.program+(x.subject?' ('+x.subject+')':''),'',
+    'Parent / guardian: '+x.full_name,'Email: '+x.email,'Phone: '+x.phone,
+    'Student: '+x.student_name+' ('+x.student_grade+')'].concat(x.notes?['Goals / notes: '+x.notes]:[]);
+  return 'mailto:'+EMAIL+'?subject='+encodeURIComponent('Enrollment '+x.enrollment_number+' — '+x.student_name)+'&body='+encodeURIComponent(lines.join('\n'));
+}
+// Sends the enrollment to GHL (or opens the email as a fallback) and shows the thank-you page.
+function complete(x,paid){
+  x.payment_status=paid?'Paid at checkout (confirm in GHL Payments)':'Payment to be arranged';
+  x.submitted_at=new Date().toISOString();
+  var mail=mailFor(x);
+  showDone(x.first_name,x.enrollment_number,
+    (paid?'<li><b>Payment received.</b> '+esc(x.package)+' — '+money(x.package_price)+'. Your receipt is on its way to '+esc(x.email)+'.</li>'
+         :'<li><b>Payment.</b> We’ll email you a secure payment link with your schedule confirmation.</li>')+
+    (GHL_WEBHOOK?'<li><b>We’ve received your enrollment.</b> Our team has your details — nothing else to send.</li>'
+                :'<li><b>Send your enrollment details.</b> Your email app should have opened with them — press <b>Send</b>. Didn’t open? <a href="'+esc(mail)+'">Try again</a>.</li>'),
+    paid?'You’re enrolled, ':'Thank you, ');
+  if(GHL_WEBHOOK)sendToGHL(x);else location.href=mail;
+}
+function showDone(first,no,steps,greet){
+  root.querySelector('.agc-wrap').innerHTML='<div class="done" tabindex="-1"><div class="ok"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#8A6A2C" stroke-width="2.6" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div>'+
+    '<h2>'+greet+esc(first)+'!</h2>'+(no?'<span class="no">'+esc(no)+'</span>':'')+
+    '<ol class="next">'+steps+'<li><b>Scheduling.</b> We’ll contact you within one business day to match your tutor and set your first session.</li></ol>'+
+    '<p class="fine">Questions? Write to <a href="mailto:'+EMAIL+'">'+EMAIL+'</a>'+(no?' with your enrollment number':'')+'.</p>'+
+    '<a class="home" href="/">Back to home</a></div>';
+  var done=root.querySelector('.done');done.focus();window.scrollTo({top:root.offsetTop-80,behavior:'smooth'});
+}
+
 form.addEventListener('submit',function(e){
   e.preventDefault();
   var bad=Array.prototype.filter.call(form.elements,function(el){return el.willValidate&&!el.checkValidity();});
   err.hidden=!bad.length;
   if(bad.length){bad[0].focus();if(bad[0].type==='radio')bad[0].closest('.step').scrollIntoView({behavior:'smooth',block:'center'});return;}
-  var d={};['parent','email','phone','student','grade','notes','subject'].forEach(function(n){d[n]=form.elements[n].disabled?'':form.elements[n].value.trim();});
-  var no='AGC-'+Date.now().toString(36).toUpperCase().slice(-6);
-  var lines=['New enrollment '+no,'',
-    'Package: '+plan.name+' ('+plan.kicker+') — '+money(plan.amount),
-    'Program: '+program.name+(d.subject?' ('+d.subject+')':''),'',
-    'Parent / guardian: '+d.parent,'Email: '+d.email,'Phone: '+d.phone,
-    'Student: '+d.student+' ('+d.grade+')'].concat(d.notes?['Goals / notes: '+d.notes]:[]);
-  var mail='mailto:'+EMAIL+'?subject='+encodeURIComponent('Enrollment '+no+' — '+d.student)+'&body='+encodeURIComponent(lines.join('\n'));
-  var pay=PAY_LINKS[plan.id];
-  root.querySelector('.agc-wrap').innerHTML='<div class="done" tabindex="-1"><div class="ok"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#8A6A2C" stroke-width="2.6" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div>'+
-    '<h2>Thank you, '+esc(d.parent.split(' ')[0])+'!</h2><span class="no">'+esc(no)+'</span>'+
-    '<ol class="next">'+
-    '<li><b>Send your enrollment details.</b> Your email app should have opened with them — press <b>Send</b>. Didn’t open? <a href="'+esc(mail)+'">Try again</a>.</li>'+
-    (pay?'<li><b>Pay for your package.</b> '+esc(plan.name)+' — '+money(plan.amount)+'. Payment opens on our secure checkout page in a new tab.</li>'
-        :'<li><b>Payment.</b> We’ll email you a secure payment link with your schedule confirmation.</li>')+
-    '</ol>'+
-    (pay?'<a class="agc-btn agc-btn-gold pay" href="'+esc(pay)+'" target="_blank" rel="noopener">Pay '+money(plan.amount)+' now</a>':'')+
-    '<p class="fine">We’ll reply within one business day to confirm your schedule. Questions? Write to <a href="mailto:'+EMAIL+'">'+EMAIL+'</a> with your enrollment number.</p>'+
-    '<a class="home" href="/">Back to home</a></div>';
-  var done=root.querySelector('.done');done.focus();window.scrollTo({top:root.offsetTop-80,behavior:'smooth'});
-  location.href=mail;
+  var p=buildEnrollment(),pay=PAY_LINKS[plan.id];
+  if(!pay){complete(p.data,false);return;}                       // no checkout for this package: enroll now
+  p.data.payment_status='Awaiting payment (sent to checkout)';
+  p.at=Date.now();savePending(p);
+  var btn=form.querySelector('.submit');btn.disabled=true;btn.textContent='Opening secure checkout…';
+  function toCheckout(){location.href=pay;}
+  if(GHL_WEBHOOK){
+    var timer=setTimeout(toCheckout,4000);                        // don't keep the family waiting if GHL is slow
+    sendToGHL(p.data).then(function(){clearTimeout(timer);toCheckout();});
+  } else {
+    location.href=mailFor(p.data);setTimeout(toCheckout,1500);    // email the details, then go to checkout
+  }
 });
+
+// Back from checkout?
+(function(){
+  var p=loadPending();
+  if(q.get('paid')){
+    history.replaceState(null,'',location.pathname);
+    if(p)clearPending();                                          // already sent before checkout: just say thanks
+    showDone(p?p.data.first_name:'',p?p.data.enrollment_number:'',
+      '<li><b>Payment received.</b> '+(p?esc(p.data.package)+' — '+money(p.data.package_price)+'. ':'')+'Your receipt is on its way by email.</li>'+
+      '<li><b>We have your enrollment.</b> Nothing else to send.</li>',
+      p?'You’re enrolled, ':'Thank you');
+    return;
+  }
+  if(p){                                                           // came back without paying: restore the form
+    var pl=document.getElementById('pl-'+p.plan),pr=document.getElementById('pr-'+p.program);
+    if(!q.get('plan')&&pl)pl.checked=true;if(pr)pr.checked=true;sync();
+    FIELDS.forEach(function(n){if(p.fields[n]&&form.elements[n])form.elements[n].value=p.fields[n];});
+    form.elements.agree.checked=true;sync();
+  }
+})();
+
+/* Sends the enrollment to the GHL inbound webhook. Tries JSON first; if the browser blocks that
+   (GHL not allowing cross-site JSON), sends the same fields as a plain form post instead. */
+function sendToGHL(data){
+  var json=JSON.stringify(data);
+  function asForm(){
+    var body=new URLSearchParams();Object.keys(data).forEach(function(k){body.append(k,data[k]==null?'':String(data[k]));});
+    return fetch(GHL_WEBHOOK,{method:'POST',mode:'no-cors',keepalive:true,body:body});
+  }
+  try{
+    return fetch(GHL_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:json,keepalive:true})
+      .then(function(r){if(!r.ok)throw new Error('GHL webhook '+r.status);})
+      .catch(function(){return asForm();}).catch(function(){});
+  }catch(e){return asForm().catch(function(){});}
+}
 })();
