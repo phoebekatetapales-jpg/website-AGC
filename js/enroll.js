@@ -32,7 +32,7 @@ var PAY_LINKS={
 /* GHL inbound webhook (Automation → Workflows → trigger "Inbound Webhook" → copy its URL).
    When set, every enrollment is sent straight to GHL and no email is involved.
    While empty (''), the form falls back to opening an email so enrollments aren't lost. */
-var GHL_WEBHOOK='';
+var GHL_WEBHOOK='https://services.leadconnectorhq.com/hooks/cFgAFxrOkoU4TMUh4bJp/webhook-trigger/e5840689-4b1b-4f23-856b-136e916e9efc';
 var PLANS=[
  {id:'flex',kicker:'Pay-as-you-go',name:'Flex Aspire Pass',amount:100,unit:'per session',rate:'$100 / session',save:''},
  {id:'sprint',kicker:'8 sessions',name:'Sprint Growth Pack',amount:720,unit:'package',rate:'$90 / session',save:'Save $80'},
