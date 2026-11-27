@@ -18,16 +18,16 @@ window.addEventListener('scroll',stuck,{passive:true});stuck();
    To change a package or price, edit PLANS below (and the matching card on /plans and the homepage). */
 (function(){
 var EMAIL='rconcepcion@agctutorials.com';
-/* GHL payment link for each package (Payments → Payment Links → Copy link).
-   TEMPORARY: every package uses the same test link until the real per-package links are created. */
-var TEST_LINK='https://api.multiplytalents.io/payment-link/6afff13a21a48a3872d27c9a';
+/* GHL payment link for each package (Payments → Payment Links → Copy link). Paid through Stripe.
+   Each GHL product must be a ONE-TIME price with no setup fee, matching the price shown on the website.
+   If you change a price in GHL, change it on the website too (plans.html, index.html, PLANS below). */
 var PAY_LINKS={
- flex:TEST_LINK,
- sprint:TEST_LINK,
- momentum:TEST_LINK,
- ascent:TEST_LINK,
- semester:TEST_LINK,
- apex:TEST_LINK
+ flex:'https://api.multiplytalents.io/payment-link/6b08f05121a48a3872d29b4b',     // Flex Aspire Pass      $100
+ sprint:'https://api.multiplytalents.io/payment-link/6b08f14121a48a3872d29b51',   // Sprint Growth Pack    $720
+ momentum:'https://api.multiplytalents.io/payment-link/6b08f0da906a8b62055da219', // Momentum Growth Pack  $1,360
+ ascent:'https://api.multiplytalents.io/payment-link/6b08f0bb21a48a3872d29b50',   // Ascent Progress Pack  $2,560
+ semester:'https://api.multiplytalents.io/payment-link/6b08f0a021a48a3872d29b4e', // Semester Conquer Pass $3,600
+ apex:'https://api.multiplytalents.io/payment-link/6b08f071906a8b62055da216'      // Apex Scholar Elite    $5,040
 };
 var PLANS=[
  {id:'flex',kicker:'Pay-as-you-go',name:'Flex Aspire Pass',amount:100,unit:'per session',rate:'$100 / session',save:''},
