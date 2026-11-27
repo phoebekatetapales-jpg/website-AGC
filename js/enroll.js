@@ -85,12 +85,14 @@ form.addEventListener('change',sync);
 form.addEventListener('input',function(){err.hidden=true;});
 sync();
 
-/* ---- Pay first, then enroll ----
-   1. "Continue to payment" saves the details in this browser and opens the package's GHL checkout.
-   2. After a successful payment, GHL sends the family back to /enroll?paid=1
-      (set this as the redirect URL on every GHL payment link).
-   3. Only then is the enrollment sent to GHL (or emailed, if GHL_WEBHOOK is empty).
-   If they leave without paying, nothing is sent; their details are kept for 2 days so the form is pre-filled. */
+/* ---- Enroll, then pay ----
+   1. "Continue to payment" sends the enrollment to GHL marked "Awaiting payment", waits for GHL to
+      receive it (up to 4 seconds), then opens the package's GHL checkout in the same tab.
+      Confirm who paid in GHL → Payments → Transactions.
+   2. The details are also kept in this browser for 2 days: if the family comes back without paying,
+      the form is pre-filled; if a GHL payment link redirects to /enroll?paid=1, they see a thank-you page
+      (nothing is sent again).
+   With GHL_WEBHOOK empty, the enrollment email opens first instead, then the checkout. */
 var STORE='agcEnrollPending',KEEP_MS=2*24*3600*1000;
 var FIELDS=['parent','email','phone','student','grade','notes','subject'];
 function loadPending(){try{var p=JSON.parse(localStorage.getItem(STORE));return p&&p.data&&Date.now()-p.at<KEEP_MS?p:null;}catch(e){return null;}}
@@ -146,22 +148,28 @@ form.addEventListener('submit',function(e){
   if(bad.length){bad[0].focus();if(bad[0].type==='radio')bad[0].closest('.step').scrollIntoView({behavior:'smooth',block:'center'});return;}
   var p=buildEnrollment(),pay=PAY_LINKS[plan.id];
   if(!pay){complete(p.data,false);return;}                       // no checkout for this package: enroll now
-  p.at=Date.now();
-  if(!savePending(p)){                                            // browser won't store it: send now so nothing is lost
-    p.data.payment_status='Sent to checkout (not yet paid)';
-    if(GHL_WEBHOOK)sendToGHL(p.data);
-  }
+  p.data.payment_status='Awaiting payment (sent to checkout)';
+  p.at=Date.now();savePending(p);
   var btn=form.querySelector('.submit');btn.disabled=true;btn.textContent='Opening secure checkout…';
-  location.href=pay;
+  function toCheckout(){location.href=pay;}
+  if(GHL_WEBHOOK){
+    var timer=setTimeout(toCheckout,4000);                        // don't keep the family waiting if GHL is slow
+    sendToGHL(p.data).then(function(){clearTimeout(timer);toCheckout();});
+  } else {
+    location.href=mailFor(p.data);setTimeout(toCheckout,1500);    // email the details, then go to checkout
+  }
 });
 
 // Back from checkout?
 (function(){
   var p=loadPending();
   if(q.get('paid')){
-    history.replaceState(null,'',location.pathname);              // a refresh won't send it twice
-    if(p){clearPending();complete(p.data,true);}
-    else showDone('', '', '<li><b>Payment received.</b> Your receipt is on its way by email.</li>','Thank you');
+    history.replaceState(null,'',location.pathname);
+    if(p)clearPending();                                          // already sent before checkout: just say thanks
+    showDone(p?p.data.first_name:'',p?p.data.enrollment_number:'',
+      '<li><b>Payment received.</b> '+(p?esc(p.data.package)+' — '+money(p.data.package_price)+'. ':'')+'Your receipt is on its way by email.</li>'+
+      '<li><b>We have your enrollment.</b> Nothing else to send.</li>',
+      p?'You’re enrolled, ':'Thank you');
     return;
   }
   if(p){                                                           // came back without paying: restore the form
