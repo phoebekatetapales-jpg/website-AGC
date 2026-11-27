@@ -29,6 +29,10 @@ var PAY_LINKS={
  semester:'https://api.multiplytalents.io/payment-link/6b08f0a021a48a3872d29b4e', // Semester Conquer Pass $3,600
  apex:'https://api.multiplytalents.io/payment-link/6b08f071906a8b62055da216'      // Apex Scholar Elite    $5,040
 };
+/* GHL inbound webhook (Automation → Workflows → trigger "Inbound Webhook" → copy its URL).
+   When set, every enrollment is sent straight to GHL and families don't need to email it.
+   Leave empty ('') to go back to the email-only flow. */
+var GHL_WEBHOOK='';
 var PLANS=[
  {id:'flex',kicker:'Pay-as-you-go',name:'Flex Aspire Pass',amount:100,unit:'per session',rate:'$100 / session',save:''},
  {id:'sprint',kicker:'8 sessions',name:'Sprint Growth Pack',amount:720,unit:'package',rate:'$90 / session',save:'Save $80'},
@@ -98,7 +102,9 @@ form.addEventListener('submit',function(e){
   root.querySelector('.agc-wrap').innerHTML='<div class="done" tabindex="-1"><div class="ok"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#8A6A2C" stroke-width="2.6" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div>'+
     '<h2>Thank you, '+esc(d.parent.split(' ')[0])+'!</h2><span class="no">'+esc(no)+'</span>'+
     '<ol class="next">'+
-    '<li><b>Send your enrollment details.</b> Your email app should have opened with them — press <b>Send</b>. Didn’t open? <a href="'+esc(mail)+'">Try again</a>.</li>'+
+    (GHL_WEBHOOK
+      ?'<li><b>We’ve received your details.</b> No need to email us — want a copy for your records? <a href="'+esc(mail)+'">Email it to us</a>.</li>'
+      :'<li><b>Send your enrollment details.</b> Your email app should have opened with them — press <b>Send</b>. Didn’t open? <a href="'+esc(mail)+'">Try again</a>.</li>')+
     (pay?'<li><b>Pay for your package.</b> '+esc(plan.name)+' — '+money(plan.amount)+'. Payment opens on our secure checkout page in a new tab.</li>'
         :'<li><b>Payment.</b> We’ll email you a secure payment link with your schedule confirmation.</li>')+
     '</ol>'+
@@ -106,6 +112,30 @@ form.addEventListener('submit',function(e){
     '<p class="fine">We’ll reply within one business day to confirm your schedule. Questions? Write to <a href="mailto:'+EMAIL+'">'+EMAIL+'</a> with your enrollment number.</p>'+
     '<a class="home" href="/">Back to home</a></div>';
   var done=root.querySelector('.done');done.focus();window.scrollTo({top:root.offsetTop-80,behavior:'smooth'});
-  location.href=mail;
+  if(GHL_WEBHOOK){
+    var names=d.parent.split(/\s+/);
+    sendToGHL({
+      first_name:names[0],last_name:names.slice(1).join(' '),full_name:d.parent,email:d.email,phone:d.phone,
+      student_name:d.student,student_grade:d.grade,
+      package:plan.name,package_sessions:plan.kicker,package_price:plan.amount,
+      program:program.name,subject:d.subject,notes:d.notes,
+      enrollment_number:no,payment_link:pay||'',source:'Website enrollment form',submitted_at:new Date().toISOString()
+    });
+  } else location.href=mail;
 });
+
+/* Sends the enrollment to the GHL inbound webhook. Tries JSON first; if the browser blocks that
+   (GHL not allowing cross-site JSON), sends the same fields as a plain form post instead. */
+function sendToGHL(data){
+  var json=JSON.stringify(data);
+  function asForm(){
+    var body=new URLSearchParams();Object.keys(data).forEach(function(k){body.append(k,data[k]==null?'':String(data[k]));});
+    return fetch(GHL_WEBHOOK,{method:'POST',mode:'no-cors',keepalive:true,body:body});
+  }
+  try{
+    return fetch(GHL_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:json,keepalive:true})
+      .then(function(r){if(!r.ok)throw new Error('GHL webhook '+r.status);})
+      .catch(function(){return asForm();}).catch(function(){});
+  }catch(e){return asForm().catch(function(){});}
+}
 })();
